@@ -37,7 +37,7 @@ push git commits and tags, and push the `.gem` file to [rubygems.org](https://ru
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/rdodson41/ruby-oxide.
+Bug reports and pull requests are welcome on GitHub at <https://github.com/rdodson41/ruby-oxide>.
 This project is intended to be a safe, welcoming space for collaboration, and
 contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org)
 code of conduct.
