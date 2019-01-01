@@ -2,6 +2,7 @@ require: rubocop-rspec
 
 AllCops:
   EnabledByDefault: true
+  TargetRubyVersion: 2.2
 
 Style/Copyright:
   Enabled: false
