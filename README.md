@@ -2,6 +2,8 @@
 
 [![Gem Version](https://badge.fury.io/rb/oxide.svg)](https://badge.fury.io/rb/oxide)
 [![Build Status](https://travis-ci.org/rdodson41/ruby-oxide.svg?branch=master)](https://travis-ci.org/rdodson41/ruby-oxide)
+[![Maintainability](https://api.codeclimate.com/v1/badges/021f4ab2eb6f6f4473b5/maintainability)](https://codeclimate.com/github/rdodson41/ruby-oxide/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/021f4ab2eb6f6f4473b5/test_coverage)](https://codeclimate.com/github/rdodson41/ruby-oxide/test_coverage)
 
 Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/oxide`. To experiment with that code, run `bin/console` for an interactive prompt.
 
