@@ -1,4 +1,4 @@
-require "oxide/version"
+require('oxide/version')
 
 module Oxide
   class Error < StandardError; end
