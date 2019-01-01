@@ -4,5 +4,9 @@ AllCops:
   EnabledByDefault: true
   TargetRubyVersion: 2.2
 
+Metrics/BlockLength:
+  Exclude:
+    - oxide.gemspec
+
 Style/Copyright:
   Enabled: false
