@@ -18,11 +18,11 @@ gem 'oxide'
 
 And then execute:
 
-    $ bundle
+    bundle
 
 Or install it yourself as:
 
-    $ gem install oxide
+    gem install oxide
 
 ## Development
 
