@@ -1,3 +1,4 @@
 #!/usr/bin/env ruby
 
-require 'oxide'
+require('bundler/setup')
+require('oxide')
