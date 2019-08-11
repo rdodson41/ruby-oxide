@@ -1,8 +1,10 @@
 /.bundle/
 /.yardoc
 /_yardoc/
+/bin/oxide
 /coverage/
 /doc/
+/obj/
 /pkg/
 /spec/reports/
 /tmp/
