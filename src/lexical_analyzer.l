@@ -9,7 +9,6 @@
 
 %%
 
-[\t\r ]+
+[\t\n\r ]+
 [0-9]+     { sscanf(yytext, "%i", &yylval.value); return INTEGER; }
-[\n]       { return *yytext; }
 .          { return *yytext; }

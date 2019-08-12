@@ -8,28 +8,20 @@ int yyerror(const char *message);
 %}
 
 %union {
-  Expression *expression;
   int value;
+  Expression *expression;
 }
-
-%type <expression> expression
 
 %token <value> INTEGER
 
 %left '+' '-'
 %left '*' '/'
 
+%type <expression> expression
+
+%start expression
+
 %%
-
-statements
-  : statements statement '\n'
-  |
-  ;
-
-statement
-  : expression                { printf("=> %i\n", evaluate_expression($1)); }
-  |
-  ;
 
 expression
   : expression '+' expression { $$ = create_addition($1, $3); }
@@ -49,4 +41,5 @@ int yyerror(const char *message) {
 
 int main(const int argc, const char *argv[]) {
   yyparse();
+  return 0;
 }
