@@ -1,5 +1,6 @@
 %{
 
+#include "expression.h"
 #include "parser.h"
 
 %}
@@ -8,6 +9,7 @@
 
 %%
 
-[\t\n\r ]+
-[0-9]+     { return INTEGER; }
+[\t\r ]+
+[0-9]+     { sscanf(yytext, "%i", &yylval.value); return INTEGER; }
+[\n]       { return *yytext; }
 .          { return *yytext; }
