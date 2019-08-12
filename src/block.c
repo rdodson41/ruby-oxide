@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "block.h"
@@ -21,6 +22,14 @@ int evaluate_block(Block *block) {
 
   evaluate_block(block->left);
   return evaluate_expression(block->right);
+}
+
+void print_block(Block *block, int level) {
+  if(block == NULL)
+    return;
+
+  print_block(block->left, level);
+  print_expression(block->right, level);
 }
 
 void delete_block(Block *block) {

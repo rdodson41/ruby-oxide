@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "block.h"
@@ -61,6 +62,50 @@ int evaluate_expression(Expression *expression) {
       return expression->value;
     default:
       return 0;
+  }
+}
+
+void print_expression(Expression *expression, int level) {
+  if(expression == NULL)
+    return;
+
+  for (int i = 0; i < level; i++)
+    printf("  ");
+
+  switch(expression->type) {
+    case ADDITION:
+      printf("ADDITION => %i\n", evaluate_expression(expression));
+      break;
+    case SUBTRACTION:
+      printf("SUBTRACTION => %i\n", evaluate_expression(expression));
+      break;
+    case MULTIPLICATION:
+      printf("MULTIPLICATION => %i\n", evaluate_expression(expression));
+      break;
+    case DIVISION:
+      printf("DIVISION => %i\n", evaluate_expression(expression));
+      break;
+    case BLOCK:
+      printf("BLOCK => %i\n", evaluate_expression(expression));
+      break;
+    case LITERAL:
+      printf("LITERAL => %i\n", evaluate_expression(expression));
+      break;
+  }
+
+  switch(expression->type) {
+    case ADDITION:
+    case SUBTRACTION:
+    case MULTIPLICATION:
+    case DIVISION:
+      print_expression(expression->left, level + 1);
+      print_expression(expression->right, level + 1);
+      break;
+    case BLOCK:
+      print_block(expression->block, level + 1);
+      break;
+    case LITERAL:
+      break;
   }
 }
 

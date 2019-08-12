@@ -38,6 +38,8 @@ Expression *create_literal_expression(int value);
 
 int evaluate_expression(Expression *expression);
 
+void print_expression(Expression *expression, int level);
+
 void delete_expression(Expression *expression);
 
 #endif

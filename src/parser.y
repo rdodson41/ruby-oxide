@@ -58,5 +58,5 @@ int main(const int argc, const char *argv[]) {
   Expression *expression;
   if(yyparse(&expression))
     return 1;
-  printf("=> %i\n", evaluate_expression(expression));
+  print_expression(expression, 0);
 }

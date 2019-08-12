@@ -14,6 +14,8 @@ Block *create_block(Block *left, Expression *right);
 
 int evaluate_block(Block *block);
 
+void print_block(Block *block, int level);
+
 void delete_block(Block *block);
 
 #endif
