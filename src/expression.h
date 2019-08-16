@@ -1,42 +1,27 @@
 #ifndef __EXPRESSION_H__
 #define __EXPRESSION_H__
 
-typedef struct Expression Expression;
-
-#include "block.h"
-
 typedef enum ExpressionType {
-  ADDITION,
-  SUBTRACTION,
-  MULTIPLICATION,
-  DIVISION,
-  BLOCK,
-  LITERAL
+  PIPE_EXPRESSION,
+  APPLICATION_EXPRESSION,
+  ADDITION_EXPRESSION,
+  SUBTRACTION_EXPRESSION,
+  MULTIPLICATION_EXPRESSION,
+  DIVISION_EXPRESSION,
+  LITERAL_EXPRESSION,
+  IDENTIFIER_EXPRESSION,
+  FUNCTION_EXPRESSION
 } ExpressionType;
 
 typedef struct Expression {
   ExpressionType type;
   struct Expression *left;
   struct Expression *right;
-  Block *block;
-  int value;
+  int literal;
+  char *identifier;
 } Expression;
 
-Expression *create_expression(ExpressionType type, Expression *left, Expression *right, Block *block, int value);
-
-Expression *create_addition_expression(Expression *left, Expression *right);
-
-Expression *create_subtraction_expression(Expression *left, Expression *right);
-
-Expression *create_multiplication_expression(Expression *left, Expression *right);
-
-Expression *create_division_expression(Expression *left, Expression *right);
-
-Expression *create_block_expression(Block *block);
-
-Expression *create_literal_expression(int value);
-
-int evaluate_expression(Expression *expression);
+Expression *create_expression(ExpressionType type, Expression *left, Expression *right, int literal, char *identifier);
 
 void print_expression(Expression *expression, int level);
 
