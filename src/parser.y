@@ -8,14 +8,16 @@ int yyerror(Expression **expression, const char *message);
 %}
 
 %union {
-  int literal;
+  long integer;
+  double floating_point;
   char *identifier;
   Expression *expression;
 }
 
-%token              IS_MAPPED_TO
-%token <literal>    LITERAL
-%token <identifier> IDENTIFIER
+%token                  IS_MAPPED_TO
+%token <integer>        INTEGER
+%token <floating_point> FLOATING_POINT
+%token <identifier>     IDENTIFIER
 
 %left '|'
 %left '$'
@@ -36,16 +38,17 @@ input
   ;
 
 expression
-  : expression '|' expression          { $$ = create_expression(PIPE_EXPRESSION, $1, $3, 0, NULL); }
-  | expression '$' expression          { $$ = create_expression(APPLICATION_EXPRESSION, $1, $3, 0, NULL); }
-  | expression '+' expression          { $$ = create_expression(ADDITION_EXPRESSION, $1, $3, 0, NULL); }
-  | expression '-' expression          { $$ = create_expression(SUBTRACTION_EXPRESSION, $1, $3, 0, NULL); }
-  | expression '*' expression          { $$ = create_expression(MULTIPLICATION_EXPRESSION, $1, $3, 0, NULL); }
-  | expression '/' expression          { $$ = create_expression(DIVISION_EXPRESSION, $1, $3, 0, NULL); }
+  : expression '|' expression          { $$ = create_expression(PIPE_EXPRESSION, $1, $3, 0, 0, NULL); }
+  | expression '$' expression          { $$ = create_expression(APPLICATION_EXPRESSION, $1, $3, 0, 0, NULL); }
+  | expression '+' expression          { $$ = create_expression(ADDITION_EXPRESSION, $1, $3, 0, 0, NULL); }
+  | expression '-' expression          { $$ = create_expression(SUBTRACTION_EXPRESSION, $1, $3, 0, 0, NULL); }
+  | expression '*' expression          { $$ = create_expression(MULTIPLICATION_EXPRESSION, $1, $3, 0, 0, NULL); }
+  | expression '/' expression          { $$ = create_expression(DIVISION_EXPRESSION, $1, $3, 0, 0, NULL); }
   | '(' expression ')'                 { $$ = $2; }
-  | LITERAL                            { $$ = create_expression(LITERAL_EXPRESSION, NULL, NULL, $1, NULL); }
-  | IDENTIFIER                         { $$ = create_expression(IDENTIFIER_EXPRESSION, NULL, NULL, 0, $1); }
-  | IDENTIFIER IS_MAPPED_TO expression { $$ = create_expression(FUNCTION_EXPRESSION, NULL, $3, 0, $1); }
+  | INTEGER                            { $$ = create_expression(INTEGER_EXPRESSION, NULL, NULL, $1, 0, NULL); }
+  | FLOATING_POINT                     { $$ = create_expression(FLOATING_POINT_EXPRESSION, NULL, NULL, 0, $1, NULL); }
+  | IDENTIFIER                         { $$ = create_expression(IDENTIFIER_EXPRESSION, NULL, NULL, 0, 0, $1); }
+  | IDENTIFIER IS_MAPPED_TO expression { $$ = create_expression(FUNCTION_EXPRESSION, NULL, $3, 0, 0, $1); }
   ;
 
 %%

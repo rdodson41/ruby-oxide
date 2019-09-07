@@ -8,7 +8,8 @@ typedef enum ExpressionType {
   SUBTRACTION_EXPRESSION,
   MULTIPLICATION_EXPRESSION,
   DIVISION_EXPRESSION,
-  LITERAL_EXPRESSION,
+  INTEGER_EXPRESSION,
+  FLOATING_POINT_EXPRESSION,
   IDENTIFIER_EXPRESSION,
   FUNCTION_EXPRESSION
 } ExpressionType;
@@ -17,11 +18,12 @@ typedef struct Expression {
   ExpressionType type;
   struct Expression *left;
   struct Expression *right;
-  int literal;
+  long integer;
+  double floating_point;
   char *identifier;
 } Expression;
 
-Expression *create_expression(ExpressionType type, Expression *left, Expression *right, int literal, char *identifier);
+Expression *create_expression(ExpressionType type, Expression *left, Expression *right, long integer, double floating_point, char *identifier);
 
 void print_expression(Expression *expression, int level);
 
