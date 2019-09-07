@@ -5,6 +5,9 @@ typedef struct Expressions Expressions;
 
 #include "expression.h"
 
+#define create_expressions_expressions(expressions, expression) (create_expressions((expressions), (expression)))
+#define create_expression_expressions(expression) (create_expressions(NULL, (expression)))
+
 typedef struct Expressions {
   Expressions *left;
   Expression *right;
