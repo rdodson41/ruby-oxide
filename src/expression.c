@@ -20,46 +20,49 @@ Expression *create_expression(ExpressionType type, Expression *left, Expression 
   return expression;
 }
 
-void print_expression(Expression *expression, int level) {
+void print_expression(Expression *expression, int level, int element) {
   if(expression == NULL)
     return;
 
   for (int i = 0; i < level; i++)
     printf("  ");
 
+  if (element != 0)
+    printf("- ");
+
   switch(expression->type) {
     case PIPE_EXPRESSION:
-      printf("PIPE\n");
+      printf("pipe:\n");
       break;
     case APPLICATION_EXPRESSION:
-      printf("APPLICATION\n");
+      printf("application:\n");
       break;
     case ADDITION_EXPRESSION:
-      printf("ADDITION\n");
+      printf("addition:\n");
       break;
     case SUBTRACTION_EXPRESSION:
-      printf("SUBTRACTION\n");
+      printf("subtraction:\n");
       break;
     case MULTIPLICATION_EXPRESSION:
-      printf("MULTIPLICATION\n");
+      printf("multiplication:\n");
       break;
     case DIVISION_EXPRESSION:
-      printf("DIVISION\n");
+      printf("division:\n");
       break;
     case EXPRESSIONS_EXPRESSION:
-      printf("EXPRESSIONS\n");
+      printf("expressions:\n");
       break;
     case INTEGER_EXPRESSION:
-      printf("INTEGER: %li\n", expression->integer);
+      printf("integer: %li\n", expression->integer);
       break;
     case FLOATING_POINT_EXPRESSION:
-      printf("FLOATING: %lf\n", expression->floating_point);
+      printf("floating_point: %lf\n", expression->floating_point);
       break;
     case IDENTIFIER_EXPRESSION:
-      printf("IDENTIFIER: %s\n", expression->identifier);
+      printf("identifier: %s\n", expression->identifier);
       break;
     case FUNCTION_EXPRESSION:
-      printf("FUNCTION: %s\n", expression->identifier);
+      printf("function:\n");
       break;
   }
 
@@ -70,18 +73,36 @@ void print_expression(Expression *expression, int level) {
     case SUBTRACTION_EXPRESSION:
     case MULTIPLICATION_EXPRESSION:
     case DIVISION_EXPRESSION:
-      print_expression(expression->left, level + 1);
-      print_expression(expression->right, level + 1);
+      for (int i = 0; i < level + 1; i++)
+        printf("  ");
+      if (element != 0)
+        printf("  ");
+      printf("left:\n");
+      print_expression(expression->left, level + 2 + element, 0);
+      for (int i = 0; i < level + 1; i++)
+        printf("  ");
+      if (element != 0)
+        printf("  ");
+      printf("right:\n");
+      print_expression(expression->right, level + 2 + element, 0);
       break;
     case EXPRESSIONS_EXPRESSION:
       print_expressions(expression->expressions, level + 1);
       break;
-    case INTEGER_EXPRESSION:
-    case FLOATING_POINT_EXPRESSION:
-    case IDENTIFIER_EXPRESSION:
-      break;
     case FUNCTION_EXPRESSION:
-      print_expression(expression->right, level + 1);
+      for (int i = 0; i < level + 1; i++)
+        printf("  ");
+      if (element != 0)
+        printf("  ");
+      printf("identifier: %s\n", expression->identifier);
+      for (int i = 0; i < level + 1; i++)
+        printf("  ");
+      if (element != 0)
+        printf("  ");
+      printf("right:\n");
+      print_expression(expression->right, level + 2 + element, 0);
+      break;
+    default:
       break;
   }
 }

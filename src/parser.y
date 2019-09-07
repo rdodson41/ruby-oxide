@@ -70,6 +70,6 @@ int yyerror(Expression **expression, const char *message) {
 int main(const int argc, const char *argv[]) {
   Expression *expression;
   if(!yyparse(&expression))
-    print_expression(expression, 0);
+    print_expression(expression, 0, 0);
   return 0;
 }

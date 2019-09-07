@@ -20,7 +20,7 @@ void print_expressions(Expressions *expressions, int level) {
     return;
 
   print_expressions(expressions->left, level);
-  print_expression(expressions->right, level);
+  print_expression(expressions->right, level, 1);
 }
 
 void delete_expressions(Expressions *expressions) {

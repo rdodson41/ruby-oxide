@@ -31,7 +31,7 @@ typedef struct Expression {
 
 Expression *create_expression(ExpressionType type, Expression *left, Expression *right, Expressions *expressions, long integer, double floating_point, char *identifier);
 
-void print_expression(Expression *expression, int level);
+void print_expression(Expression *expression, int level, int element);
 
 void delete_expression(Expression *expression);
 
