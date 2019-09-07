@@ -1,3 +1,5 @@
+YACC := PATH="/usr/local/opt/bison/bin:$${PATH}" bison
+
 SRC := src
 OBJ := obj
 BIN := bin
@@ -9,6 +11,9 @@ $(SRC)/%.h: $(SRC)/%.l
 
 $(SRC)/%.h: $(SRC)/%.y
 	$(YACC) $(YFLAGS) --defines=$(@) --output-file=/dev/null $(<)
+
+$(SRC)/%.c: $(SRC)/%.y
+	$(YACC) $(YFLAGS) --output-file=$(@) $(<)
 
 $(OBJ):
 	mkdir -p $(@)

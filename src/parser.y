@@ -33,6 +33,9 @@ int yyerror(Expression **expression, const char *message);
 
 %start input
 
+%define parse.error verbose
+%define parse.lac full
+
 %parse-param { Expression **expression }
 
 %%
