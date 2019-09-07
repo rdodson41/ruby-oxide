@@ -16,14 +16,15 @@ typedef enum ExpressionType {
   INTEGER_EXPRESSION,
   FLOATING_POINT_EXPRESSION,
   IDENTIFIER_EXPRESSION,
+  ASSIGNMENT_EXPRESSION,
   FUNCTION_EXPRESSION
 } ExpressionType;
 
 typedef struct Expression {
   ExpressionType type;
-  struct Expression *left;
-  struct Expression *right;
-  struct Expressions *expressions;
+  Expression *left;
+  Expression *right;
+  Expressions *expressions;
   long integer;
   double floating_point;
   char *identifier;

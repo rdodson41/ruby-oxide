@@ -24,10 +24,10 @@ void print_expression(Expression *expression, int level, int element) {
   if(expression == NULL)
     return;
 
-  for (int i = 0; i < level; i++)
+  for(int i = 0; i < level; i++)
     printf("  ");
 
-  if (element != 0)
+  if(element != 0)
     printf("- ");
 
   switch(expression->type) {
@@ -61,6 +61,9 @@ void print_expression(Expression *expression, int level, int element) {
     case IDENTIFIER_EXPRESSION:
       printf("identifier: %s\n", expression->identifier);
       break;
+    case ASSIGNMENT_EXPRESSION:
+      printf("assignment:\n");
+      break;
     case FUNCTION_EXPRESSION:
       printf("function:\n");
       break;
@@ -73,15 +76,15 @@ void print_expression(Expression *expression, int level, int element) {
     case SUBTRACTION_EXPRESSION:
     case MULTIPLICATION_EXPRESSION:
     case DIVISION_EXPRESSION:
-      for (int i = 0; i < level + 1; i++)
+      for(int i = 0; i < level + 1; i++)
         printf("  ");
-      if (element != 0)
+      if(element != 0)
         printf("  ");
       printf("left:\n");
       print_expression(expression->left, level + 2 + element, 0);
-      for (int i = 0; i < level + 1; i++)
+      for(int i = 0; i < level + 1; i++)
         printf("  ");
-      if (element != 0)
+      if(element != 0)
         printf("  ");
       printf("right:\n");
       print_expression(expression->right, level + 2 + element, 0);
@@ -89,15 +92,16 @@ void print_expression(Expression *expression, int level, int element) {
     case EXPRESSIONS_EXPRESSION:
       print_expressions(expression->expressions, level + 1);
       break;
+    case ASSIGNMENT_EXPRESSION:
     case FUNCTION_EXPRESSION:
-      for (int i = 0; i < level + 1; i++)
+      for(int i = 0; i < level + 1; i++)
         printf("  ");
-      if (element != 0)
+      if(element != 0)
         printf("  ");
       printf("identifier: %s\n", expression->identifier);
-      for (int i = 0; i < level + 1; i++)
+      for(int i = 0; i < level + 1; i++)
         printf("  ");
-      if (element != 0)
+      if(element != 0)
         printf("  ");
       printf("right:\n");
       print_expression(expression->right, level + 2 + element, 0);
@@ -113,8 +117,10 @@ void delete_expression(Expression *expression) {
 
   delete_expression(expression->left);
   delete_expression(expression->right);
+  delete_expressions(expression->expressions);
 
-  free(expression->identifier);
+  if(expression->identifier != NULL)
+    free(expression->identifier);
 
   free(expression);
 }

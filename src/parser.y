@@ -23,6 +23,7 @@ int yyerror(Expression **expression, const char *message);
 
 %left '|'
 %left '$'
+%right '='
 %right IS_MAPPED_TO
 %left '+' '-'
 %left '*' '/'
@@ -52,6 +53,7 @@ expression
   | INTEGER                            { $$ = create_expression(INTEGER_EXPRESSION, NULL, NULL, NULL, $1, 0, NULL); }
   | FLOATING_POINT                     { $$ = create_expression(FLOATING_POINT_EXPRESSION, NULL, NULL, NULL, 0, $1, NULL); }
   | IDENTIFIER                         { $$ = create_expression(IDENTIFIER_EXPRESSION, NULL, NULL, NULL, 0, 0, $1); }
+  | IDENTIFIER '=' expression          { $$ = create_expression(ASSIGNMENT_EXPRESSION, NULL, $3, NULL, 0, 0, $1); }
   | IDENTIFIER IS_MAPPED_TO expression { $$ = create_expression(FUNCTION_EXPRESSION, NULL, $3, NULL, 0, 0, $1); }
   ;
 

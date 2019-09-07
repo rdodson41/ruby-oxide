@@ -6,8 +6,8 @@ typedef struct Expressions Expressions;
 #include "expression.h"
 
 typedef struct Expressions {
-  struct Expressions *left;
-  struct Expression *right;
+  Expressions *left;
+  Expression *right;
 } Expressions;
 
 Expressions *create_expressions(Expressions *left, Expression *right);
