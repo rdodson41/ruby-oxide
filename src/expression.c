@@ -3,7 +3,7 @@
 
 #include "expression.h"
 
-Expression *create_expression(ExpressionType type, Expression *left, Expression *right, long integer, double floating_point, char *identifier) {
+Expression *create_expression(ExpressionType type, Expression *left, Expression *right, Expressions *expressions, long integer, double floating_point, char *identifier) {
   Expression *expression = (Expression *)malloc(sizeof(Expression));
 
   if(expression == NULL)
@@ -12,6 +12,7 @@ Expression *create_expression(ExpressionType type, Expression *left, Expression 
   expression->type = type;
   expression->left = left;
   expression->right = right;
+  expression->expressions = expressions;
   expression->integer = integer;
   expression->floating_point = floating_point;
   expression->identifier = identifier;
@@ -45,6 +46,9 @@ void print_expression(Expression *expression, int level) {
     case DIVISION_EXPRESSION:
       printf("DIVISION\n");
       break;
+    case EXPRESSIONS_EXPRESSION:
+      printf("EXPRESSIONS\n");
+      break;
     case INTEGER_EXPRESSION:
       printf("INTEGER: %li\n", expression->integer);
       break;
@@ -68,6 +72,9 @@ void print_expression(Expression *expression, int level) {
     case DIVISION_EXPRESSION:
       print_expression(expression->left, level + 1);
       print_expression(expression->right, level + 1);
+      break;
+    case EXPRESSIONS_EXPRESSION:
+      print_expressions(expression->expressions, level + 1);
       break;
     case INTEGER_EXPRESSION:
     case FLOATING_POINT_EXPRESSION:
