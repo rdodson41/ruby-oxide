@@ -1,3 +1,8 @@
+require('oxide/expression')
+require('oxide/value')
+require('oxide/values/floating_point')
+require('oxide/values/function')
+require('oxide/values/integer')
 require('oxide/version')
 
 module Oxide
