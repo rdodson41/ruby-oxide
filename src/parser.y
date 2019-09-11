@@ -5,7 +5,9 @@
 #include "parser.h"
 #include "lexical_analyzer.h"
 
-int yyerror(yyscan_t scanner, Expression **expression, const char *message);
+extern char line[];
+
+int yyerror(YYLTYPE *yylloc, yyscan_t scanner, Expression **expression, const char *message);
 
 %}
 
@@ -37,6 +39,8 @@ int yyerror(yyscan_t scanner, Expression **expression, const char *message);
 %define api.pure full
 %define parse.error verbose
 %define parse.lac full
+
+%locations
 
 %param       { void *scanner }
 %parse-param { Expression **expression }
@@ -70,8 +74,12 @@ expressions
 
 %%
 
-int yyerror(yyscan_t scanner, Expression **expression, const char *message) {
-  fprintf(stderr, "%s\n", message);
+int yyerror(YYLTYPE *yylloc, yyscan_t scanner, Expression **expression, const char *message) {
+  fprintf(stderr, "%i:%i: %s\n%s\n", yylloc->first_line, yylloc->first_column + 1, message, line);
+  for(int i = 0; i < yylloc->first_column; i++)
+    putchar(' ');
+  for(int i = 0; i < yyget_leng(scanner); i++)
+    putchar('^');
   return 0;
 }
 

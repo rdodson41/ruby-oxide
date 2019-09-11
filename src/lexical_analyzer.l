@@ -3,15 +3,29 @@
 #include "expression.h"
 #include "parser.h"
 
+#define YY_USER_ACTION \
+    yylloc->first_line = yylineno; \
+    yylloc->last_line = yylloc->first_line; \
+    yylloc->first_column = yycolumn; \
+    yylloc->last_column = yylloc->first_column + yyleng; \
+    strncpy(&line[yylloc->first_column], yytext, yyleng); \
+    line[yylloc->last_column] = '\0'; \
+    yycolumn += yyleng;
+
+char line[256];
+
 %}
 
 %option bison-bridge
+%option bison-locations
 %option noyywrap
 %option reentrant
+%option yylineno
 
 %%
 
-[\t\n\r ]
+[\t\r ]
+[\n]                                                      { yycolumn = 0; }
 "->"                                                      { return IS_MAPPED_TO; }
 [+-]?[0-9]+                                               { sscanf(yytext, "%li", &yylval->integer); return INTEGER; }
 [+-]?0[Xx][0-9A-Fa-f]+                                    { sscanf(yytext, "%li", &yylval->integer); return INTEGER; }
