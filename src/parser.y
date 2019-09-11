@@ -2,6 +2,7 @@
 
 #include "expression.h"
 #include "expressions.h"
+#include "parser.h"
 #include "lexical_analyzer.h"
 
 int yyerror(Expression **expression, const char *message);
@@ -33,6 +34,7 @@ int yyerror(Expression **expression, const char *message);
 
 %start input
 
+%define api.pure full
 %define parse.error verbose
 %define parse.lac full
 
