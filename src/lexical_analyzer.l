@@ -7,6 +7,7 @@
 
 %option bison-bridge
 %option noyywrap
+%option reentrant
 
 %%
 

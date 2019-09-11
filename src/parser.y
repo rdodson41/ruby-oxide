@@ -5,7 +5,7 @@
 #include "parser.h"
 #include "lexical_analyzer.h"
 
-int yyerror(Expression **expression, const char *message);
+int yyerror(yyscan_t scanner, Expression **expression, const char *message);
 
 %}
 
@@ -38,6 +38,7 @@ int yyerror(Expression **expression, const char *message);
 %define parse.error verbose
 %define parse.lac full
 
+%param       { void *scanner }
 %parse-param { Expression **expression }
 
 %%
@@ -69,14 +70,18 @@ expressions
 
 %%
 
-int yyerror(Expression **expression, const char *message) {
+int yyerror(yyscan_t scanner, Expression **expression, const char *message) {
   fprintf(stderr, "%s\n", message);
   return 0;
 }
 
 int main(const int argc, const char *argv[]) {
+  yyscan_t scanner;
   Expression *expression;
-  if(!yyparse(&expression))
+  if(yylex_init(&scanner))
+    exit(1);
+  if(!yyparse(scanner, &expression))
     print_expression(expression, 0, 0);
+  yylex_destroy(scanner);
   return 0;
 }
