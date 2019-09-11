@@ -75,7 +75,8 @@ expressions
 %%
 
 int yyerror(YYLTYPE *yylloc, yyscan_t scanner, Expression **expression, const char *message) {
-  fprintf(stderr, "%i:%i: %s\n%s\n", yylloc->first_line, yylloc->first_column + 1, message, line);
+  fprintf(stderr, "%i:%i: %s\n", yylloc->first_line, yylloc->first_column + 1, message);
+  fprintf(stderr, "%s\n", line);
   for(int i = 0; i < yylloc->first_column; i++)
     fputc(' ', stderr);
   for(int i = 0; i < yyget_leng(scanner); i++)
