@@ -34,7 +34,7 @@ int yyerror(YYLTYPE *yylloc, yyscan_t scanner, Expression **expression, const ch
 %left '$'
 %right IS_MAPPED_TO
 %left '+' '-'
-%left '*' '/'
+%left '*' '/' '%'
 
 %type <expression> expression
 %type <expressions> expressions
