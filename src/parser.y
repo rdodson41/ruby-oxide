@@ -24,9 +24,9 @@ int yyerror(YYLTYPE *yylloc, yyscan_t scanner, Expression **expression, const ch
 %token <floating_point> FLOATING_POINT
 %token <identifier>     IDENTIFIER
 
+%right '='
 %left '|'
 %left '$'
-%right '='
 %right IS_MAPPED_TO
 %left '+' '-'
 %left '*' '/'
