@@ -30,6 +30,8 @@ module Oxide
         Oxide::Expression.evaluate(left, context) * Oxide::Expression.evaluate(right, context)
       when 'division'
         Oxide::Expression.evaluate(left, context) / Oxide::Expression.evaluate(right, context)
+      when 'modulo'
+        Oxide::Expression.evaluate(left, context) % Oxide::Expression.evaluate(right, context)
       when 'expressions'
         expressions.map do |expression|
           Oxide::Expression.evaluate(expression, context)
@@ -42,6 +44,16 @@ module Oxide
         context.fetch(identifier)
       when 'assignment'
         context[identifier] = Oxide::Expression.evaluate(right, context)
+      when 'addition_assignment'
+        context[identifier] = context.fetch(identifier) + Oxide::Expression.evaluate(right, context)
+      when 'subtraction_assignment'
+        context[identifier] = context.fetch(identifier) - Oxide::Expression.evaluate(right, context)
+      when 'multiplication_assignment'
+        context[identifier] = context.fetch(identifier) * Oxide::Expression.evaluate(right, context)
+      when 'division_assignment'
+        context[identifier] = context.fetch(identifier) / Oxide::Expression.evaluate(right, context)
+      when 'modulo_assignment'
+        context[identifier] = context.fetch(identifier) % Oxide::Expression.evaluate(right, context)
       when 'function'
         Oxide::Values::Function.new(identifier, right, context)
       else

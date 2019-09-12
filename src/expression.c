@@ -49,6 +49,9 @@ void print_expression(Expression *expression, int level, int element) {
     case DIVISION_EXPRESSION:
       printf("type: division\n");
       break;
+    case MODULO_EXPRESSION:
+      printf("type: modulo\n");
+      break;
     case EXPRESSIONS_EXPRESSION:
       printf("type: expressions\n");
       break;
@@ -64,6 +67,21 @@ void print_expression(Expression *expression, int level, int element) {
     case ASSIGNMENT_EXPRESSION:
       printf("type: assignment\n");
       break;
+    case ADDITION_ASSIGNMENT_EXPRESSION:
+      printf("type: addition_assignment\n");
+      break;
+    case SUBTRACTION_ASSIGNMENT_EXPRESSION:
+      printf("type: subraction_assignment\n");
+      break;
+    case MULTIPLICATION_ASSIGNMENT_EXPRESSION:
+      printf("type: multiplication_assignment\n");
+      break;
+    case DIVISION_ASSIGNMENT_EXPRESSION:
+      printf("type: division_assignment\n");
+      break;
+    case MODULO_ASSIGNMENT_EXPRESSION:
+      printf("type: modulo_assignment\n");
+      break;
     case FUNCTION_EXPRESSION:
       printf("type: function\n");
       break;
@@ -76,6 +94,7 @@ void print_expression(Expression *expression, int level, int element) {
     case SUBTRACTION_EXPRESSION:
     case MULTIPLICATION_EXPRESSION:
     case DIVISION_EXPRESSION:
+    case MODULO_EXPRESSION:
       for(int i = 0; i < level; i++)
         printf("  ");
       if(element)
@@ -119,6 +138,11 @@ void print_expression(Expression *expression, int level, int element) {
       printf("identifier: %s\n", expression->identifier);
       break;
     case ASSIGNMENT_EXPRESSION:
+    case ADDITION_ASSIGNMENT_EXPRESSION:
+    case SUBTRACTION_ASSIGNMENT_EXPRESSION:
+    case MULTIPLICATION_ASSIGNMENT_EXPRESSION:
+    case DIVISION_ASSIGNMENT_EXPRESSION:
+    case MODULO_ASSIGNMENT_EXPRESSION:
     case FUNCTION_EXPRESSION:
       for(int i = 0; i < level; i++)
         printf("  ");

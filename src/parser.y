@@ -19,12 +19,17 @@ int yyerror(YYLTYPE *yylloc, yyscan_t scanner, Expression **expression, const ch
   Expressions *expressions;
 }
 
+%token                  EQUALS_ADDED_TO
+%token                  EQUALS_SUBTRACTED_FROM
+%token                  EQUALS_MULTIPLIED_BY
+%token                  EQUALS_DIVIDED_BY
+%token                  EQUALS_MODULO
 %token                  IS_MAPPED_TO
 %token <integer>        INTEGER
 %token <floating_point> FLOATING_POINT
 %token <identifier>     IDENTIFIER
 
-%right '='
+%right '=' EQUALS_ADDED_TO EQUALS_SUBTRACTED_FROM EQUALS_MULTIPLIED_BY EQUALS_DIVIDED_BY EQUALS_MODULO
 %left '|'
 %left '$'
 %right IS_MAPPED_TO
@@ -52,19 +57,25 @@ input
   ;
 
 expression
-  : expression '|' expression          { $$ = create_pipe_expression($1, $3); }
-  | expression '$' expression          { $$ = create_application_expression($1, $3); }
-  | expression '+' expression          { $$ = create_addition_expression($1, $3); }
-  | expression '-' expression          { $$ = create_subtraction_expression($1, $3); }
-  | expression '*' expression          { $$ = create_multiplication_expression($1, $3); }
-  | expression '/' expression          { $$ = create_division_expression($1, $3); }
-  | '(' expression ')'                 { $$ = create_expression_expression($2); }
-  | '{' expressions '}'                { $$ = create_expressions_expression($2); }
-  | INTEGER                            { $$ = create_integer_expression($1); }
-  | FLOATING_POINT                     { $$ = create_floating_point_expression($1); }
-  | IDENTIFIER                         { $$ = create_identifier_expression($1); }
-  | IDENTIFIER '=' expression          { $$ = create_assignment_expression($1, $3); }
-  | IDENTIFIER IS_MAPPED_TO expression { $$ = create_function_expression($1, $3); }
+  : expression '|' expression                    { $$ = create_pipe_expression($1, $3); }
+  | expression '$' expression                    { $$ = create_application_expression($1, $3); }
+  | expression '+' expression                    { $$ = create_addition_expression($1, $3); }
+  | expression '-' expression                    { $$ = create_subtraction_expression($1, $3); }
+  | expression '*' expression                    { $$ = create_multiplication_expression($1, $3); }
+  | expression '/' expression                    { $$ = create_division_expression($1, $3); }
+  | expression '%' expression                    { $$ = create_modulo_expression($1, $3); }
+  | '(' expression ')'                           { $$ = create_expression_expression($2); }
+  | '{' expressions '}'                          { $$ = create_expressions_expression($2); }
+  | INTEGER                                      { $$ = create_integer_expression($1); }
+  | FLOATING_POINT                               { $$ = create_floating_point_expression($1); }
+  | IDENTIFIER                                   { $$ = create_identifier_expression($1); }
+  | IDENTIFIER '=' expression                    { $$ = create_assignment_expression($1, $3); }
+  | IDENTIFIER EQUALS_ADDED_TO expression        { $$ = create_addition_assignment_expression($1, $3); }
+  | IDENTIFIER EQUALS_SUBTRACTED_FROM expression { $$ = create_subtraction_assignment_expression($1, $3); }
+  | IDENTIFIER EQUALS_MULTIPLIED_BY expression   { $$ = create_multiplication_assignment_expression($1, $3); }
+  | IDENTIFIER EQUALS_DIVIDED_BY expression      { $$ = create_division_assignment_expression($1, $3); }
+  | IDENTIFIER EQUALS_MODULO expression          { $$ = create_modulo_assignment_expression($1, $3); }
+  | IDENTIFIER IS_MAPPED_TO expression           { $$ = create_function_expression($1, $3); }
   ;
 
 expressions

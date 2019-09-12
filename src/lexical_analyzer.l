@@ -26,6 +26,11 @@ char line[256];
 
 [\t\r ]
 [\n]                                                      { yycolumn = 0; }
+"+="                                                      { return EQUALS_ADDED_TO; }
+"-="                                                      { return EQUALS_SUBTRACTED_FROM; }
+"*="                                                      { return EQUALS_MULTIPLIED_BY; }
+"/="                                                      { return EQUALS_DIVIDED_BY; }
+"%="                                                      { return EQUALS_MODULO; }
 "->"                                                      { return IS_MAPPED_TO; }
 [+-]?[0-9]+                                               { sscanf(yytext, "%li", &yylval->integer); return INTEGER; }
 [+-]?0[Xx][0-9A-Fa-f]+                                    { sscanf(yytext, "%li", &yylval->integer); return INTEGER; }

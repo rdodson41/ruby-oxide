@@ -55,6 +55,17 @@ module Oxide
         end
       end
 
+      def %(operand)
+        case operand.type
+        when :integer
+          Oxide::Values::Integer.new(integer % operand.integer)
+        when :floating_point
+          Oxide::Values::FloatingPoint.new(integer % operand.floating_point)
+        else
+          raise("invalid operand type: #{operand.type.to_json}")
+        end
+      end
+
       def to_s
         integer.to_s
       end
