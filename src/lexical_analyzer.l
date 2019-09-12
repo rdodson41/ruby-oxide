@@ -26,6 +26,7 @@ char line[256];
 
 [\t\r ]
 [\n]                                                      { yycolumn = 0; }
+[#].*
 "+="                                                      { return EQUALS_ADDED_TO; }
 "-="                                                      { return EQUALS_SUBTRACTED_FROM; }
 "*="                                                      { return EQUALS_MULTIPLIED_BY; }
