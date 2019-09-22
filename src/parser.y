@@ -30,9 +30,9 @@ int yyerror(YYLTYPE *yylloc, yyscan_t scanner, Expression **expression, const ch
 %token <identifier>     IDENTIFIER
 
 %right '=' EQUALS_ADDED_TO EQUALS_SUBTRACTED_FROM EQUALS_MULTIPLIED_BY EQUALS_DIVIDED_BY EQUALS_MODULO
+%right IS_MAPPED_TO
 %left '|'
 %left '$'
-%right IS_MAPPED_TO
 %left '+' '-'
 %left '*' '/' '%'
 
@@ -53,7 +53,7 @@ int yyerror(YYLTYPE *yylloc, yyscan_t scanner, Expression **expression, const ch
 %%
 
 input
-  : expression                         { *expression = $1; }
+  : expression                                   { *expression = $1; }
   ;
 
 expression
@@ -79,8 +79,8 @@ expression
   ;
 
 expressions
-  : expressions expression             { $$ = create_expressions_expressions($1, $2); }
-  | expression                         { $$ = create_expression_expressions($1); }
+  : expressions expression                       { $$ = create_expressions_expressions($1, $2); }
+  | expression                                   { $$ = create_expression_expressions($1); }
   ;
 
 %%
