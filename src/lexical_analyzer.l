@@ -4,13 +4,13 @@
 #include "parser.h"
 
 #define YY_USER_ACTION \
-    yylloc->first_line = yylineno; \
-    yylloc->last_line = yylineno; \
-    yylloc->first_column = yycolumn; \
-    yylloc->last_column = yycolumn + yyleng; \
-    strncpy(&line[yycolumn], yytext, yyleng); \
-    line[yycolumn + yyleng] = '\0'; \
-    yycolumn += yyleng;
+  yylloc->first_line = yylineno; \
+  yylloc->last_line = yylineno; \
+  yylloc->first_column = yycolumn; \
+  yylloc->last_column = yycolumn + yyleng; \
+  strncpy(&line[yycolumn], yytext, yyleng); \
+  line[yycolumn + yyleng] = '\0'; \
+  yycolumn += yyleng;
 
 char line[256];
 
