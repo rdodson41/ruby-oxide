@@ -31,6 +31,30 @@ void print_expression(Expression *expression, int level, int element) {
     printf("- ");
 
   switch(expression->type) {
+    case OR_EXPRESSION:
+      printf("type: or\n");
+      break;
+    case AND_EXPRESSION:
+      printf("type: and\n");
+      break;
+    case EQUAL_EXPRESSION:
+      printf("type: equal\n");
+      break;
+    case NOT_EQUAL_EXPRESSION:
+      printf("type: not_equal\n");
+      break;
+    case LESS_THAN_EXPRESSION:
+      printf("type: less_than\n");
+      break;
+    case LESS_THAN_OR_EQUAL_EXPRESSION:
+      printf("type: less_than_or_equal\n");
+      break;
+    case GREATER_THAN_EXPRESSION:
+      printf("type: greater_than\n");
+      break;
+    case GREATER_THAN_OR_EQUAL_EXPRESSION:
+      printf("type: greater_than_or_equal\n");
+      break;
     case PIPE_EXPRESSION:
       printf("type: pipe\n");
       break;
@@ -54,6 +78,12 @@ void print_expression(Expression *expression, int level, int element) {
       break;
     case EXPRESSIONS_EXPRESSION:
       printf("type: expressions\n");
+      break;
+    case FALSE_EXPRESSION:
+      printf("type: 'false'\n");
+      break;
+    case TRUE_EXPRESSION:
+      printf("type: 'true'\n");
       break;
     case INTEGER_EXPRESSION:
       printf("type: integer\n");
@@ -88,6 +118,14 @@ void print_expression(Expression *expression, int level, int element) {
   }
 
   switch(expression->type) {
+    case OR_EXPRESSION:
+    case AND_EXPRESSION:
+    case EQUAL_EXPRESSION:
+    case NOT_EQUAL_EXPRESSION:
+    case LESS_THAN_EXPRESSION:
+    case LESS_THAN_OR_EQUAL_EXPRESSION:
+    case GREATER_THAN_EXPRESSION:
+    case GREATER_THAN_OR_EQUAL_EXPRESSION:
     case PIPE_EXPRESSION:
     case APPLICATION_EXPRESSION:
     case ADDITION_EXPRESSION:

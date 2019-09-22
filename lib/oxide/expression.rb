@@ -1,3 +1,4 @@
+require('oxide/values/boolean')
 require('oxide/values/floating_point')
 require('oxide/values/function')
 require('oxide/values/integer')
@@ -18,6 +19,22 @@ module Oxide
 
     def evaluate(context)
       case type
+      when 'or'
+        Oxide::Expression.evaluate(left, context).or(Oxide::Expression.evaluate(right, context))
+      when 'and'
+        Oxide::Expression.evaluate(left, context).and(Oxide::Expression.evaluate(right, context))
+      when 'equal'
+        Oxide::Expression.evaluate(left, context) == Oxide::Expression.evaluate(right, context)
+      when 'not_equal'
+        Oxide::Expression.evaluate(left, context) != Oxide::Expression.evaluate(right, context)
+      when 'less_than'
+        Oxide::Expression.evaluate(left, context) < Oxide::Expression.evaluate(right, context)
+      when 'less_than_or_equal'
+        Oxide::Expression.evaluate(left, context) <= Oxide::Expression.evaluate(right, context)
+      when 'greater_than'
+        Oxide::Expression.evaluate(left, context) > Oxide::Expression.evaluate(right, context)
+      when 'greater_than_or_equal'
+        Oxide::Expression.evaluate(left, context) >= Oxide::Expression.evaluate(right, context)
       when 'pipe'
         Oxide::Expression.evaluate(right, context).evaluate(Oxide::Expression.evaluate(left, context))
       when 'application'
@@ -36,6 +53,10 @@ module Oxide
         expressions.map do |expression|
           Oxide::Expression.evaluate(expression, context)
         end.last
+      when 'false'
+        Oxide::Values::Boolean.new(false)
+      when 'true'
+        Oxide::Values::Boolean.new(true)
       when 'integer'
         Oxide::Values::Integer.new(integer)
       when 'floating_point'

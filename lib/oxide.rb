@@ -1,5 +1,6 @@
 require('oxide/expression')
 require('oxide/value')
+require('oxide/values/boolean')
 require('oxide/values/floating_point')
 require('oxide/values/function')
 require('oxide/values/integer')

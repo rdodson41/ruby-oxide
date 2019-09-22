@@ -11,6 +11,72 @@ module Oxide
         @integer = integer
       end
 
+      def ==(operand)
+        case operand.type
+        when :integer
+          Oxide::Values::Boolean.new(integer == operand.integer)
+        when :floating_point
+          Oxide::Values::Boolean.new(integer == operand.floating_point)
+        else
+          raise("invalid operand type: #{operand.type.to_json}")
+        end
+      end
+
+      def !=(operand)
+        case operand.type
+        when :integer
+          Oxide::Values::Boolean.new(integer != operand.integer)
+        when :floating_point
+          Oxide::Values::Boolean.new(integer != operand.floating_point)
+        else
+          raise("invalid operand type: #{operand.type.to_json}")
+        end
+      end
+
+      def <(operand)
+        case operand.type
+        when :integer
+          Oxide::Values::Boolean.new(integer < operand.integer)
+        when :floating_point
+          Oxide::Values::Boolean.new(integer < operand.floating_point)
+        else
+          raise("invalid operand type: #{operand.type.to_json}")
+        end
+      end
+
+      def <=(operand)
+        case operand.type
+        when :integer
+          Oxide::Values::Boolean.new(integer <= operand.integer)
+        when :floating_point
+          Oxide::Values::Boolean.new(integer <= operand.floating_point)
+        else
+          raise("invalid operand type: #{operand.type.to_json}")
+        end
+      end
+
+      def >(operand)
+        case operand.type
+        when :integer
+          Oxide::Values::Boolean.new(integer > operand.integer)
+        when :floating_point
+          Oxide::Values::Boolean.new(integer > operand.floating_point)
+        else
+          raise("invalid operand type: #{operand.type.to_json}")
+        end
+      end
+
+      def >=(operand)
+        case operand.type
+        when :integer
+          Oxide::Values::Boolean.new(integer >= operand.integer)
+        when :floating_point
+          Oxide::Values::Boolean.new(integer >= operand.floating_point)
+        else
+          raise("invalid operand type: #{operand.type.to_json}")
+        end
+      end
+
       def +(operand)
         case operand.type
         when :integer

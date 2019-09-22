@@ -24,8 +24,8 @@ $(OBJ)/%.o: $(SRC)/%.c | $(OBJ)
 .INTERMEDIATE: $(SRC)/parser.h
 $(OBJ)/lexical_analyzer.o: $(SRC)/parser.h
 
-.INTERMEDIATE: $(SRC)/lexical_analyzer.h
-$(OBJ)/parser.o: $(SRC)/lexical_analyzer.h
+.INTERMEDIATE: $(SRC)/lexical_analyzer.h $(SRC)/parser.h
+$(OBJ)/parser.o: $(SRC)/lexical_analyzer.h $(SRC)/parser.h
 
 $(BIN)/oxide: $(OBJ)/lexical_analyzer.o $(OBJ)/parser.o $(OBJ)/expressions.o $(OBJ)/expression.o
 	$(CC) $(LDFLAGS) $(^) $(LOADLIBES) $(LDLIBS) -o $(@)
