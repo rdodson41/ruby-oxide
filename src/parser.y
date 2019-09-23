@@ -119,11 +119,35 @@ int yyerror(YYLTYPE *yylloc, yyscan_t scanner, Expression **expression, const ch
 
 int main(const int argc, const char *argv[]) {
   yyscan_t scanner;
-  Expression *expression;
-  if(yylex_init(&scanner))
-    exit(1);
-  if(!yyparse(scanner, &expression))
+
+  if(yylex_init(&scanner) != 0) {
+    perror("Could not initialize lexical analyzer");
+    exit(EXIT_FAILURE);
+  }
+
+  while(1) {
+    char *line = NULL;
+    size_t linecap = 0;
+    ssize_t linelen = getline(&line, &linecap, stdin);
+
+    if(linelen < 1)
+      break;
+
+    YY_BUFFER_STATE buffer = yy_scan_string(line, scanner);
+
+    Expression *expression;
+
+    int result = yyparse(scanner, &expression);
+
+    yy_delete_buffer(buffer, scanner);
+
+    if(result != 0)
+      break;
+
     print_expression(expression, 0, 0);
+  }
+
   yylex_destroy(scanner);
-  return 0;
+
+  exit(EXIT_SUCCESS);
 }
