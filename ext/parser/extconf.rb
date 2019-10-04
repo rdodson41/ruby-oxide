@@ -1,25 +1,25 @@
 require('mkmf')
 require('pry')
 
-SRC_EXT << ['y', 'l']
-
 create_makefile('parser/parser') do |config|
   config << <<~MAKEFILE
+    OBJS := $(OBJS) lexical_analyzer.o parser.o
+
     YACC := PATH="/usr/local/opt/bison/bin:$${PATH}" bison
 
-    %.h: %.l
-    	$(LEX) $(LFLAGS) --outfile=/dev/null --header-file=$(@) $(<)
+    .DEFAULT_GOAL := all
 
-    %.h: %.y
-    	$(YACC) $(YFLAGS) --defines=$(@) --output-file=/dev/null $(<)
+    $(srcdir)/lexical_analyzer.h: $(srcdir)/lexical_analyzer.l
+      $(LEX) $(LFLAGS) --outfile=/dev/null --header-file=$(@) $(<)
 
-    %.c: %.y
-    	$(YACC) $(YFLAGS) --output-file=$(@) $(<)
+    $(srcdir)/parser.h: $(srcdir)/parser.y
+      $(YACC) $(YFLAGS) --defines=$(@) --output-file=/dev/null $(<)
 
-    .INTERMEDIATE: $(srcdir)/parser.h
-    $(srcdir)/lexical_analyzer.o: $(srcdir)/parser.h
+    $(srcdir)/parser.c: $(srcdir)/parser.y
+      $(YACC) $(YFLAGS) --output-file=$(@) $(<)
 
-    .INTERMEDIATE: $(srcdir)/lexical_analyzer.h $(srcdir)/parser.h
-    $(srcdir)/parser.o: $(srcdir)/lexical_analyzer.h $(srcdir)/parser.h
+    lexical_analyzer.o: $(srcdir)/parser.h
+
+    parser.o: $(srcdir)/lexical_analyzer.h $(srcdir)/parser.h
   MAKEFILE
 end
