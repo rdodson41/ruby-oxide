@@ -4,6 +4,7 @@
 /bin/oxide
 /coverage/
 /doc/
+/lib/oxide/oxide.bundle
 /obj/
 /pkg/
 /spec/reports/
