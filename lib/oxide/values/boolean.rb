@@ -10,39 +10,39 @@ module Oxide
         @boolean = boolean
       end
 
-      def or(operand)
-        case operand.type
+      def or(other)
+        case other.type
         when :boolean
-          Oxide::Values::Boolean.new(boolean || operand.boolean)
+          Oxide::Values::Boolean.new(boolean || other.boolean)
         else
-          raise("invalid operand type: #{operand.type.to_json}")
+          raise(ArgumentError, "invalid operand type: #{other.type.to_json}")
         end
       end
 
-      def and(operand)
-        case operand.type
+      def and(other)
+        case other.type
         when :boolean
-          Oxide::Values::Boolean.new(boolean && operand.boolean)
+          Oxide::Values::Boolean.new(boolean && other.boolean)
         else
-          raise("invalid operand type: #{operand.type.to_json}")
+          raise(ArgumentError, "invalid operand type: #{other.type.to_json}")
         end
       end
 
-      def ==(operand)
-        case operand.type
+      def ==(other)
+        case other.type
         when :boolean
-          Oxide::Values::Boolean.new(boolean == operand.boolean)
+          Oxide::Values::Boolean.new(boolean == other.boolean)
         else
-          raise("invalid operand type: #{operand.type.to_json}")
+          raise(ArgumentError, "invalid operand type: #{other.type.to_json}")
         end
       end
 
-      def !=(operand)
-        case operand.type
+      def !=(other)
+        case other.type
         when :boolean
-          Oxide::Values::Boolean.new(boolean != operand.boolean)
+          Oxide::Values::Boolean.new(boolean != other.boolean)
         else
-          raise("invalid operand type: #{operand.type.to_json}")
+          raise(ArgumentError, "invalid operand type: #{other.type.to_json}")
         end
       end
 

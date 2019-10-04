@@ -1,6 +1,7 @@
 require('oxide/value')
 require('oxide/values/floating_point')
 
+# rubocop:disable Metrics/ClassLength
 module Oxide
   module Values
     class Integer < Value
@@ -11,124 +12,124 @@ module Oxide
         @integer = integer
       end
 
-      def ==(operand)
-        case operand.type
+      def ==(other)
+        case other.type
         when :integer
-          Oxide::Values::Boolean.new(integer == operand.integer)
+          Oxide::Values::Boolean.new(integer == other.integer)
         when :floating_point
-          Oxide::Values::Boolean.new(integer == operand.floating_point)
+          Oxide::Values::Boolean.new(integer == other.floating_point)
         else
-          raise("invalid operand type: #{operand.type.to_json}")
+          raise(ArgumentError, "invalid operand type: #{other.type.to_json}")
         end
       end
 
-      def !=(operand)
-        case operand.type
+      def !=(other)
+        case other.type
         when :integer
-          Oxide::Values::Boolean.new(integer != operand.integer)
+          Oxide::Values::Boolean.new(integer != other.integer)
         when :floating_point
-          Oxide::Values::Boolean.new(integer != operand.floating_point)
+          Oxide::Values::Boolean.new(integer != other.floating_point)
         else
-          raise("invalid operand type: #{operand.type.to_json}")
+          raise(ArgumentError, "invalid operand type: #{other.type.to_json}")
         end
       end
 
-      def <(operand)
-        case operand.type
+      def <(other)
+        case other.type
         when :integer
-          Oxide::Values::Boolean.new(integer < operand.integer)
+          Oxide::Values::Boolean.new(integer < other.integer)
         when :floating_point
-          Oxide::Values::Boolean.new(integer < operand.floating_point)
+          Oxide::Values::Boolean.new(integer < other.floating_point)
         else
-          raise("invalid operand type: #{operand.type.to_json}")
+          raise(ArgumentError, "invalid operand type: #{other.type.to_json}")
         end
       end
 
-      def <=(operand)
-        case operand.type
+      def <=(other)
+        case other.type
         when :integer
-          Oxide::Values::Boolean.new(integer <= operand.integer)
+          Oxide::Values::Boolean.new(integer <= other.integer)
         when :floating_point
-          Oxide::Values::Boolean.new(integer <= operand.floating_point)
+          Oxide::Values::Boolean.new(integer <= other.floating_point)
         else
-          raise("invalid operand type: #{operand.type.to_json}")
+          raise(ArgumentError, "invalid operand type: #{other.type.to_json}")
         end
       end
 
-      def >(operand)
-        case operand.type
+      def >(other)
+        case other.type
         when :integer
-          Oxide::Values::Boolean.new(integer > operand.integer)
+          Oxide::Values::Boolean.new(integer > other.integer)
         when :floating_point
-          Oxide::Values::Boolean.new(integer > operand.floating_point)
+          Oxide::Values::Boolean.new(integer > other.floating_point)
         else
-          raise("invalid operand type: #{operand.type.to_json}")
+          raise(ArgumentError, "invalid operand type: #{other.type.to_json}")
         end
       end
 
-      def >=(operand)
-        case operand.type
+      def >=(other)
+        case other.type
         when :integer
-          Oxide::Values::Boolean.new(integer >= operand.integer)
+          Oxide::Values::Boolean.new(integer >= other.integer)
         when :floating_point
-          Oxide::Values::Boolean.new(integer >= operand.floating_point)
+          Oxide::Values::Boolean.new(integer >= other.floating_point)
         else
-          raise("invalid operand type: #{operand.type.to_json}")
+          raise(ArgumentError, "invalid operand type: #{other.type.to_json}")
         end
       end
 
-      def +(operand)
-        case operand.type
+      def +(other)
+        case other.type
         when :integer
-          Oxide::Values::Integer.new(integer + operand.integer)
+          Oxide::Values::Integer.new(integer + other.integer)
         when :floating_point
-          Oxide::Values::FloatingPoint.new(integer + operand.floating_point)
+          Oxide::Values::FloatingPoint.new(integer + other.floating_point)
         else
-          raise("invalid operand type: #{operand.type.to_json}")
+          raise(ArgumentError, "invalid operand type: #{other.type.to_json}")
         end
       end
 
-      def -(operand)
-        case operand.type
+      def -(other)
+        case other.type
         when :integer
-          Oxide::Values::Integer.new(integer - operand.integer)
+          Oxide::Values::Integer.new(integer - other.integer)
         when :floating_point
-          Oxide::Values::FloatingPoint.new(integer - operand.floating_point)
+          Oxide::Values::FloatingPoint.new(integer - other.floating_point)
         else
-          raise("invalid operand type: #{operand.type.to_json}")
+          raise(ArgumentError, "invalid operand type: #{other.type.to_json}")
         end
       end
 
-      def *(operand)
-        case operand.type
+      def *(other)
+        case other.type
         when :integer
-          Oxide::Values::Integer.new(integer * operand.integer)
+          Oxide::Values::Integer.new(integer * other.integer)
         when :floating_point
-          Oxide::Values::FloatingPoint.new(integer * operand.floating_point)
+          Oxide::Values::FloatingPoint.new(integer * other.floating_point)
         else
-          raise("invalid operand type: #{operand.type.to_json}")
+          raise(ArgumentError, "invalid operand type: #{other.type.to_json}")
         end
       end
 
-      def /(operand)
-        case operand.type
+      def /(other)
+        case other.type
         when :integer
-          Oxide::Values::Integer.new(integer / operand.integer)
+          Oxide::Values::Integer.new(integer / other.integer)
         when :floating_point
-          Oxide::Values::FloatingPoint.new(integer / operand.floating_point)
+          Oxide::Values::FloatingPoint.new(integer / other.floating_point)
         else
-          raise("invalid operand type: #{operand.type.to_json}")
+          raise(ArgumentError, "invalid operand type: #{other.type.to_json}")
         end
       end
 
-      def %(operand)
-        case operand.type
+      def %(other)
+        case other.type
         when :integer
-          Oxide::Values::Integer.new(integer % operand.integer)
+          Oxide::Values::Integer.new(integer % other.integer)
         when :floating_point
-          Oxide::Values::FloatingPoint.new(integer % operand.floating_point)
+          Oxide::Values::FloatingPoint.new(integer % other.floating_point)
         else
-          raise("invalid operand type: #{operand.type.to_json}")
+          raise(ArgumentError, "invalid operand type: #{other.type.to_json}")
         end
       end
 
@@ -138,3 +139,4 @@ module Oxide
     end
   end
 end
+# rubocop:enable Metrics/ClassLength

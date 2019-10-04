@@ -3,6 +3,7 @@ require('oxide/values/floating_point')
 require('oxide/values/function')
 require('oxide/values/integer')
 
+# rubocop:disable Metrics/ClassLength
 module Oxide
   class Expression
     class << self
@@ -17,42 +18,43 @@ module Oxide
       @attributes = attributes
     end
 
+    # rubocop:disable Metrics/AbcSize
+    # rubocop:disable Metrics/CyclomaticComplexity
+    # rubocop:disable Metrics/MethodLength
     def evaluate(context)
       case type
       when 'or'
-        Oxide::Expression.evaluate(left, context).or(Oxide::Expression.evaluate(right, context))
+        evaluate_left(context).or(evaluate_right(context))
       when 'and'
-        Oxide::Expression.evaluate(left, context).and(Oxide::Expression.evaluate(right, context))
+        evaluate_left(context).and(evaluate_right(context))
       when 'equal'
-        Oxide::Expression.evaluate(left, context) == Oxide::Expression.evaluate(right, context)
+        evaluate_left(context) == evaluate_right(context)
       when 'not_equal'
-        Oxide::Expression.evaluate(left, context) != Oxide::Expression.evaluate(right, context)
+        evaluate_left(context) != evaluate_right(context)
       when 'less_than'
-        Oxide::Expression.evaluate(left, context) < Oxide::Expression.evaluate(right, context)
+        evaluate_left(context) < evaluate_right(context)
       when 'less_than_or_equal'
-        Oxide::Expression.evaluate(left, context) <= Oxide::Expression.evaluate(right, context)
+        evaluate_left(context) <= evaluate_right(context)
       when 'greater_than'
-        Oxide::Expression.evaluate(left, context) > Oxide::Expression.evaluate(right, context)
+        evaluate_left(context) > evaluate_right(context)
       when 'greater_than_or_equal'
-        Oxide::Expression.evaluate(left, context) >= Oxide::Expression.evaluate(right, context)
+        evaluate_left(context) >= evaluate_right(context)
       when 'pipe'
-        Oxide::Expression.evaluate(right, context).evaluate(Oxide::Expression.evaluate(left, context))
+        evaluate_right(context).evaluate(evaluate_left(context))
       when 'application'
-        Oxide::Expression.evaluate(left, context).evaluate(Oxide::Expression.evaluate(right, context))
+        evaluate_left(context).evaluate(evaluate_right(context))
       when 'addition'
-        Oxide::Expression.evaluate(left, context) + Oxide::Expression.evaluate(right, context)
+        evaluate_left(context) + evaluate_right(context)
       when 'subtraction'
-        Oxide::Expression.evaluate(left, context) - Oxide::Expression.evaluate(right, context)
+        evaluate_left(context) - evaluate_right(context)
       when 'multiplication'
-        Oxide::Expression.evaluate(left, context) * Oxide::Expression.evaluate(right, context)
+        evaluate_left(context) * evaluate_right(context)
       when 'division'
-        Oxide::Expression.evaluate(left, context) / Oxide::Expression.evaluate(right, context)
+        evaluate_left(context) / evaluate_right(context)
       when 'modulo'
-        Oxide::Expression.evaluate(left, context) % Oxide::Expression.evaluate(right, context)
+        evaluate_left(context) % evaluate_right(context)
       when 'expressions'
-        expressions.map do |expression|
-          Oxide::Expression.evaluate(expression, context)
-        end.last
+        evaluate_expressions(context).last
       when 'false'
         Oxide::Values::Boolean.new(false)
       when 'true'
@@ -64,21 +66,43 @@ module Oxide
       when 'identifier'
         context.fetch(identifier)
       when 'assignment'
-        context[identifier] = Oxide::Expression.evaluate(right, context)
+        context[identifier] = evaluate_right(context)
       when 'addition_assignment'
-        context[identifier] = context.fetch(identifier) + Oxide::Expression.evaluate(right, context)
+        context[identifier] =
+          context.fetch(identifier) + evaluate_right(context)
       when 'subtraction_assignment'
-        context[identifier] = context.fetch(identifier) - Oxide::Expression.evaluate(right, context)
+        context[identifier] =
+          context.fetch(identifier) - evaluate_right(context)
       when 'multiplication_assignment'
-        context[identifier] = context.fetch(identifier) * Oxide::Expression.evaluate(right, context)
+        context[identifier] =
+          context.fetch(identifier) * evaluate_right(context)
       when 'division_assignment'
-        context[identifier] = context.fetch(identifier) / Oxide::Expression.evaluate(right, context)
+        context[identifier] =
+          context.fetch(identifier) / evaluate_right(context)
       when 'modulo_assignment'
-        context[identifier] = context.fetch(identifier) % Oxide::Expression.evaluate(right, context)
+        context[identifier] =
+          context.fetch(identifier) % evaluate_right(context)
       when 'function'
         Oxide::Values::Function.new(identifier, right, context)
       else
-        raise("invalid expression type: #{type.to_json}")
+        raise(ArgumentError, "invalid expression type: #{type.to_json}")
+      end
+    end
+    # rubocop:enable Metrics/AbcSize
+    # rubocop:enable Metrics/CyclomaticComplexity
+    # rubocop:enable Metrics/MethodLength
+
+    def evaluate_left(context)
+      Oxide::Expression.evaluate(left, context)
+    end
+
+    def evaluate_right(context)
+      Oxide::Expression.evaluate(right, context)
+    end
+
+    def evaluate_expressions(context)
+      expressions.map do |expression|
+        Oxide::Expression.evaluate(expression, context)
       end
     end
 
@@ -113,3 +137,4 @@ module Oxide
     end
   end
 end
+# rubocop:enable Metrics/ClassLength

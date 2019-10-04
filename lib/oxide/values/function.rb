@@ -23,7 +23,7 @@ module Oxide
       end
 
       def to_s
-        "#{identifier.to_s} -> #{right.to_json}"
+        "#{identifier} -> #{right.to_json}"
       end
     end
   end
