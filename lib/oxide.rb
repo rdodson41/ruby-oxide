@@ -1,3 +1,4 @@
+require('oxide/oxide')
 require('oxide/version')
 
 module Oxide
