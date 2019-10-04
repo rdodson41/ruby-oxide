@@ -1,5 +1,7 @@
 %{
 
+#include <ruby.h>
+
 #include "expression.h"
 #include "expressions.h"
 #include "parser.h"
@@ -117,7 +119,7 @@ int yyerror(YYLTYPE *yylloc, yyscan_t scanner, Expression **expression, const ch
   return 0;
 }
 
-int main(const int argc, const char *argv[]) {
+VALUE parse(VALUE self) {
   yyscan_t scanner;
 
   if(yylex_init(&scanner) != 0) {
@@ -150,4 +152,11 @@ int main(const int argc, const char *argv[]) {
   yylex_destroy(scanner);
 
   exit(EXIT_SUCCESS);
+
+  return rb_str_new2("done");
+}
+
+void Init_parser() {
+  VALUE oxide = rb_define_module("Oxide");
+  rb_define_singleton_method(oxide, "parse", parse, 0);
 }

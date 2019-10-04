@@ -5,6 +5,7 @@
 /coverage/
 /doc/
 /lib/oxide/oxide.bundle
+/lib/oxide/parser.bundle
 /obj/
 /pkg/
 /spec/reports/

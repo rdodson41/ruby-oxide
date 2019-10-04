@@ -6,6 +6,10 @@ Rake::ExtensionTask.new('oxide') do |ext|
   ext.lib_dir = 'lib/oxide'
 end
 
+Rake::ExtensionTask.new('parser') do |ext|
+  ext.lib_dir = 'lib/oxide'
+end
+
 RSpec::Core::RakeTask.new(:spec)
 
 task(default: %i[compile spec])
