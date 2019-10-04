@@ -7,8 +7,6 @@
 #include "parser.h"
 #include "lexical_analyzer.h"
 
-extern char line[];
-
 int yyerror(YYLTYPE *yylloc, yyscan_t scanner, Expression **expression, const char *message);
 
 %}
@@ -111,20 +109,15 @@ expressions
 
 int yyerror(YYLTYPE *yylloc, yyscan_t scanner, Expression **expression, const char *message) {
   fprintf(stderr, "%i:%i: %s\n", yylloc->first_line, yylloc->first_column + 1, message);
-  fprintf(stderr, "%s\n", line);
-  for(int i = 0; i < yylloc->first_column; i++)
-    fputc(' ', stderr);
-  for(int i = 0; i < yyget_leng(scanner); i++)
-    fputc('^', stderr);
   return 0;
 }
 
-VALUE parse(VALUE self) {
+VALUE call(VALUE self) {
   yyscan_t scanner;
 
   if(yylex_init(&scanner) != 0) {
     perror("Could not initialize lexical analyzer");
-    exit(EXIT_FAILURE);
+    return Qnil;
   }
 
   while(1) {
@@ -151,12 +144,11 @@ VALUE parse(VALUE self) {
 
   yylex_destroy(scanner);
 
-  exit(EXIT_SUCCESS);
-
-  return rb_str_new2("done");
+  return Qnil;
 }
 
 void Init_parser() {
   VALUE oxide = rb_define_module("Oxide");
-  rb_define_singleton_method(oxide, "parse", parse, 0);
+  VALUE parser = rb_define_module_under(oxide, "Parser");
+  rb_define_singleton_method(parser, "call", call, 0);
 }

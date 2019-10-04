@@ -7,12 +7,8 @@
   yylloc->first_line = yylineno; \
   yylloc->last_line = yylineno; \
   yylloc->first_column = yycolumn; \
-  yylloc->last_column = yycolumn + yyleng; \
-  strncpy(&line[yycolumn], yytext, yyleng); \
-  line[yycolumn + yyleng] = '\0'; \
+  yylloc->last_column = yycolumn + (int)yyleng; \
   yycolumn += yyleng;
-
-char line[256];
 
 %}
 

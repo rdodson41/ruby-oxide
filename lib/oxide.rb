@@ -1,5 +1,4 @@
 require('oxide/expression')
-require('oxide/oxide')
 require('oxide/parser')
 require('oxide/value')
 require('oxide/values/boolean')

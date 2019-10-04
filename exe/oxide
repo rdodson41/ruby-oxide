@@ -2,6 +2,5 @@
 
 require('bundler/setup')
 require('oxide')
-require('yaml')
 
-puts("=> #{Oxide::Expression.evaluate(YAML.safe_load(ARGF.read), {})}")
+Oxide::Parser.call
