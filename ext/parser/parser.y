@@ -6,26 +6,13 @@
   Expressions *expressions;
 }
 
-%token                  EQUALS_ADDED_TO
-%token                  EQUALS_SUBTRACTED_FROM
-%token                  EQUALS_MULTIPLIED_BY
-%token                  EQUALS_DIVIDED_BY
-%token                  EQUALS_MODULO
-%token                  IS_MAPPED_TO
-%token                  OR
-%token                  AND
-%token                  IS_EQUAL_TO
-%token                  IS_NOT_EQUAL_TO
-%token                  IS_LESS_THAN_OR_EQUAL_TO
-%token                  IS_GREATER_THAN_OR_EQUAL_TO
 %token                  FALSE
 %token                  TRUE
 %token <integer>        INTEGER
 %token <floating_point> FLOATING_POINT
 %token <identifier>     IDENTIFIER
 
-%right '=' EQUALS_ADDED_TO EQUALS_SUBTRACTED_FROM EQUALS_MULTIPLIED_BY EQUALS_DIVIDED_BY EQUALS_MODULO
-%right IS_MAPPED_TO
+%right '=' EQUALS_ADDED_TO EQUALS_SUBTRACTED_FROM EQUALS_MULTIPLIED_BY EQUALS_DIVIDED_BY EQUALS_MODULO IS_MAPPED_TO
 %left OR
 %left AND
 %left IS_EQUAL_TO IS_NOT_EQUAL_TO
@@ -35,8 +22,8 @@
 %left '+' '-'
 %left '*' '/' '%'
 
-%type <expression> expression
-%type <expressions> expressions
+%nterm <expression> expression
+%nterm <expressions> expressions
 
 %start input
 
@@ -56,7 +43,7 @@
 }
 
 %define api.location.type {
-  struct YYLTYPE {
+  struct {
     unsigned long first_line;
     unsigned long first_column;
     unsigned long last_line;
