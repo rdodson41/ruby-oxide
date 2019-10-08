@@ -7,7 +7,7 @@
   yylloc->first_line = yylineno; \
   yylloc->last_line = yylineno; \
   yylloc->first_column = yycolumn; \
-  yylloc->last_column = yycolumn + (int)yyleng; \
+  yylloc->last_column = yycolumn + yyleng; \
   yycolumn += yyleng;
 
 %}

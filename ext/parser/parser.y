@@ -108,7 +108,7 @@ expressions
 %%
 
 int yyerror(YYLTYPE *yylloc, yyscan_t scanner, Expression **expression, const char *message) {
-  fprintf(stderr, "%i:%i: %s\n", yylloc->first_line, yylloc->first_column + 1, message);
+  fprintf(stderr, "%i:%i: %s\n", yylloc->first_line, yylloc->first_column, message);
   return 0;
 }
 
