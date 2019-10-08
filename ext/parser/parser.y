@@ -1,16 +1,3 @@
-%{
-
-#include <ruby.h>
-
-#include "expression.h"
-#include "expressions.h"
-#include "parser.h"
-#include "lexical_analyzer.h"
-
-int yyerror(YYLTYPE *yylloc, yyscan_t scanner, Expression **expression, const char *message);
-
-%}
-
 %union {
   long integer;
   double floating_point;
@@ -52,6 +39,30 @@ int yyerror(YYLTYPE *yylloc, yyscan_t scanner, Expression **expression, const ch
 %type <expressions> expressions
 
 %start input
+
+%code {
+  #include <ruby.h>
+  #include <stdio.h>
+  #include <stdlib.h>
+
+  #include "lexical_analyzer.h"
+
+  int yyerror(YYLTYPE *yylloc, yyscan_t scanner, Expression **expression, const char *message);
+}
+
+%code requires {
+  #include "expression.h"
+  #include "expressions.h"
+}
+
+%define api.location.type {
+  struct YYLTYPE {
+    unsigned long first_line;
+    unsigned long first_column;
+    unsigned long last_line;
+    unsigned long last_column;
+  }
+}
 
 %define api.pure full
 %define parse.error verbose
@@ -108,7 +119,7 @@ expressions
 %%
 
 int yyerror(YYLTYPE *yylloc, yyscan_t scanner, Expression **expression, const char *message) {
-  fprintf(stderr, "%i:%i: %s\n", yylloc->first_line, yylloc->first_column, message);
+  fprintf(stderr, "%lu:%lu: %s\n", yylloc->first_line, yylloc->first_column, message);
   return 0;
 }
 

@@ -5,8 +5,8 @@
 
 #define YY_USER_ACTION \
   yylloc->first_line = yylineno; \
-  yylloc->last_line = yylineno; \
   yylloc->first_column = yycolumn; \
+  yylloc->last_line = yylineno; \
   yylloc->last_column = yycolumn + yyleng; \
   yycolumn += yyleng;
 
@@ -14,6 +14,8 @@
 
 %option bison-bridge
 %option bison-locations
+%option noinput
+%option nounput
 %option noyywrap
 %option reentrant
 %option yylineno
