@@ -67,7 +67,19 @@ input
   ;
 
 expression
-  : expression OR expression                          { $$ = create_or_expression($1, $3); }
+  : FALSE                                             { $$ = create_false_expression(); }
+  | TRUE                                              { $$ = create_true_expression(); }
+  | INTEGER                                           { $$ = create_integer_expression($1); }
+  | FLOATING_POINT                                    { $$ = create_floating_point_expression($1); }
+  | IDENTIFIER                                        { $$ = create_identifier_expression($1); }
+  | IDENTIFIER '=' expression                         { $$ = create_assignment_expression($1, $3); }
+  | IDENTIFIER EQUALS_ADDED_TO expression             { $$ = create_addition_assignment_expression($1, $3); }
+  | IDENTIFIER EQUALS_SUBTRACTED_FROM expression      { $$ = create_subtraction_assignment_expression($1, $3); }
+  | IDENTIFIER EQUALS_MULTIPLIED_BY expression        { $$ = create_multiplication_assignment_expression($1, $3); }
+  | IDENTIFIER EQUALS_DIVIDED_BY expression           { $$ = create_division_assignment_expression($1, $3); }
+  | IDENTIFIER EQUALS_MODULO expression               { $$ = create_modulo_assignment_expression($1, $3); }
+  | IDENTIFIER IS_MAPPED_TO expression                { $$ = create_function_expression($1, $3); }
+  | expression OR expression                          { $$ = create_or_expression($1, $3); }
   | expression AND expression                         { $$ = create_and_expression($1, $3); }
   | expression IS_EQUAL_TO expression                 { $$ = create_equal_expression($1, $3); }
   | expression IS_NOT_EQUAL_TO expression             { $$ = create_not_equal_expression($1, $3); }
@@ -84,18 +96,6 @@ expression
   | expression '%' expression                         { $$ = create_modulo_expression($1, $3); }
   | '(' expression ')'                                { $$ = create_expression_expression($2); }
   | '{' expressions '}'                               { $$ = create_expressions_expression($2); }
-  | FALSE                                             { $$ = create_false_expression(); }
-  | TRUE                                              { $$ = create_true_expression(); }
-  | INTEGER                                           { $$ = create_integer_expression($1); }
-  | FLOATING_POINT                                    { $$ = create_floating_point_expression($1); }
-  | IDENTIFIER                                        { $$ = create_identifier_expression($1); }
-  | IDENTIFIER '=' expression                         { $$ = create_assignment_expression($1, $3); }
-  | IDENTIFIER EQUALS_ADDED_TO expression             { $$ = create_addition_assignment_expression($1, $3); }
-  | IDENTIFIER EQUALS_SUBTRACTED_FROM expression      { $$ = create_subtraction_assignment_expression($1, $3); }
-  | IDENTIFIER EQUALS_MULTIPLIED_BY expression        { $$ = create_multiplication_assignment_expression($1, $3); }
-  | IDENTIFIER EQUALS_DIVIDED_BY expression           { $$ = create_division_assignment_expression($1, $3); }
-  | IDENTIFIER EQUALS_MODULO expression               { $$ = create_modulo_assignment_expression($1, $3); }
-  | IDENTIFIER IS_MAPPED_TO expression                { $$ = create_function_expression($1, $3); }
   ;
 
 expressions

@@ -31,6 +31,42 @@ void print_expression(Expression *expression, int level, int element) {
     printf("- ");
 
   switch(expression->type) {
+    case FALSE_EXPRESSION:
+      printf("type: 'false'\n");
+      break;
+    case TRUE_EXPRESSION:
+      printf("type: 'true'\n");
+      break;
+    case INTEGER_EXPRESSION:
+      printf("type: integer\n");
+      break;
+    case FLOATING_POINT_EXPRESSION:
+      printf("type: floating_point\n");
+      break;
+    case IDENTIFIER_EXPRESSION:
+      printf("type: identifier\n");
+      break;
+    case ASSIGNMENT_EXPRESSION:
+      printf("type: assignment\n");
+      break;
+    case ADDITION_ASSIGNMENT_EXPRESSION:
+      printf("type: addition_assignment\n");
+      break;
+    case SUBTRACTION_ASSIGNMENT_EXPRESSION:
+      printf("type: subraction_assignment\n");
+      break;
+    case MULTIPLICATION_ASSIGNMENT_EXPRESSION:
+      printf("type: multiplication_assignment\n");
+      break;
+    case DIVISION_ASSIGNMENT_EXPRESSION:
+      printf("type: division_assignment\n");
+      break;
+    case MODULO_ASSIGNMENT_EXPRESSION:
+      printf("type: modulo_assignment\n");
+      break;
+    case FUNCTION_EXPRESSION:
+      printf("type: function\n");
+      break;
     case OR_EXPRESSION:
       printf("type: or\n");
       break;
@@ -79,81 +115,9 @@ void print_expression(Expression *expression, int level, int element) {
     case EXPRESSIONS_EXPRESSION:
       printf("type: expressions\n");
       break;
-    case FALSE_EXPRESSION:
-      printf("type: 'false'\n");
-      break;
-    case TRUE_EXPRESSION:
-      printf("type: 'true'\n");
-      break;
-    case INTEGER_EXPRESSION:
-      printf("type: integer\n");
-      break;
-    case FLOATING_POINT_EXPRESSION:
-      printf("type: floating_point\n");
-      break;
-    case IDENTIFIER_EXPRESSION:
-      printf("type: identifier\n");
-      break;
-    case ASSIGNMENT_EXPRESSION:
-      printf("type: assignment\n");
-      break;
-    case ADDITION_ASSIGNMENT_EXPRESSION:
-      printf("type: addition_assignment\n");
-      break;
-    case SUBTRACTION_ASSIGNMENT_EXPRESSION:
-      printf("type: subraction_assignment\n");
-      break;
-    case MULTIPLICATION_ASSIGNMENT_EXPRESSION:
-      printf("type: multiplication_assignment\n");
-      break;
-    case DIVISION_ASSIGNMENT_EXPRESSION:
-      printf("type: division_assignment\n");
-      break;
-    case MODULO_ASSIGNMENT_EXPRESSION:
-      printf("type: modulo_assignment\n");
-      break;
-    case FUNCTION_EXPRESSION:
-      printf("type: function\n");
-      break;
   }
 
   switch(expression->type) {
-    case OR_EXPRESSION:
-    case AND_EXPRESSION:
-    case EQUAL_EXPRESSION:
-    case NOT_EQUAL_EXPRESSION:
-    case LESS_THAN_EXPRESSION:
-    case LESS_THAN_OR_EQUAL_EXPRESSION:
-    case GREATER_THAN_EXPRESSION:
-    case GREATER_THAN_OR_EQUAL_EXPRESSION:
-    case PIPE_EXPRESSION:
-    case APPLICATION_EXPRESSION:
-    case ADDITION_EXPRESSION:
-    case SUBTRACTION_EXPRESSION:
-    case MULTIPLICATION_EXPRESSION:
-    case DIVISION_EXPRESSION:
-    case MODULO_EXPRESSION:
-      for(int i = 0; i < level; i++)
-        printf("  ");
-      if(element)
-        printf("  ");
-      printf("left:\n");
-      print_expression(expression->left, level + element + 1, 0);
-      for(int i = 0; i < level; i++)
-        printf("  ");
-      if(element)
-        printf("  ");
-      printf("right:\n");
-      print_expression(expression->right, level + element + 1, 0);
-      break;
-    case EXPRESSIONS_EXPRESSION:
-      for(int i = 0; i < level; i++)
-        printf("  ");
-      if(element)
-        printf("  ");
-      printf("expressions:\n");
-      print_expressions(expression->expressions, level + element + 1);
-      break;
     case INTEGER_EXPRESSION:
       for(int i = 0; i < level; i++)
         printf("  ");
@@ -193,6 +157,42 @@ void print_expression(Expression *expression, int level, int element) {
         printf("  ");
       printf("right:\n");
       print_expression(expression->right, level + element + 1, 0);
+      break;
+    case OR_EXPRESSION:
+    case AND_EXPRESSION:
+    case EQUAL_EXPRESSION:
+    case NOT_EQUAL_EXPRESSION:
+    case LESS_THAN_EXPRESSION:
+    case LESS_THAN_OR_EQUAL_EXPRESSION:
+    case GREATER_THAN_EXPRESSION:
+    case GREATER_THAN_OR_EQUAL_EXPRESSION:
+    case PIPE_EXPRESSION:
+    case APPLICATION_EXPRESSION:
+    case ADDITION_EXPRESSION:
+    case SUBTRACTION_EXPRESSION:
+    case MULTIPLICATION_EXPRESSION:
+    case DIVISION_EXPRESSION:
+    case MODULO_EXPRESSION:
+      for(int i = 0; i < level; i++)
+        printf("  ");
+      if(element)
+        printf("  ");
+      printf("left:\n");
+      print_expression(expression->left, level + element + 1, 0);
+      for(int i = 0; i < level; i++)
+        printf("  ");
+      if(element)
+        printf("  ");
+      printf("right:\n");
+      print_expression(expression->right, level + element + 1, 0);
+      break;
+    case EXPRESSIONS_EXPRESSION:
+      for(int i = 0; i < level; i++)
+        printf("  ");
+      if(element)
+        printf("  ");
+      printf("expressions:\n");
+      print_expressions(expression->expressions, level + element + 1);
       break;
     default:
       break;
