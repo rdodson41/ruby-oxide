@@ -42,15 +42,6 @@
   #include "expressions.h"
 }
 
-%define api.location.type {
-  struct {
-    unsigned long first_line;
-    unsigned long first_column;
-    unsigned long last_line;
-    unsigned long last_column;
-  }
-}
-
 %define api.pure full
 %define parse.error verbose
 %define parse.lac full
@@ -106,7 +97,7 @@ expressions
 %%
 
 int yyerror(YYLTYPE *yylloc, yyscan_t scanner, Expression **expression, const char *message) {
-  fprintf(stderr, "%lu:%lu: %s\n", yylloc->first_line, yylloc->first_column, message);
+  fprintf(stderr, "%i:%i: %s\n", yylloc->first_line, yylloc->first_column, message);
   return 0;
 }
 
