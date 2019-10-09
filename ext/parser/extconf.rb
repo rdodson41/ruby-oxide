@@ -1,10 +1,10 @@
 require('mkmf')
 
+SRC_EXT << %w[l y]
+
 create_makefile('parser/parser') do |config|
   config << <<~MAKEFILE.gsub(/  /, "\t")
     YACC := PATH="/usr/local/opt/bison/bin:$${PATH}" bison
-
-    OBJS := $(OBJS) lexical_analyzer.o parser.o
 
     .DEFAULT_GOAL := all
 

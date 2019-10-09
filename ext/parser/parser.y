@@ -110,7 +110,7 @@ int yyerror(YYLTYPE *yylloc, yyscan_t scanner, Expression **expression, const ch
   return 0;
 }
 
-VALUE call(VALUE self) {
+VALUE call(VALUE self, VALUE string) {
   yyscan_t scanner;
 
   if(yylex_init(&scanner) != 0) {
@@ -118,27 +118,16 @@ VALUE call(VALUE self) {
     return Qnil;
   }
 
-  while(1) {
-    char *line = NULL;
-    size_t linecap = 0;
-    ssize_t linelen = getline(&line, &linecap, stdin);
+  YY_BUFFER_STATE buffer = yy_scan_string(StringValueCStr(string), scanner);
 
-    if(linelen < 1)
-      break;
+  Expression *expression;
 
-    YY_BUFFER_STATE buffer = yy_scan_string(line, scanner);
+  int result = yyparse(scanner, &expression);
 
-    Expression *expression;
+  yy_delete_buffer(buffer, scanner);
 
-    int result = yyparse(scanner, &expression);
-
-    yy_delete_buffer(buffer, scanner);
-
-    if(result != 0)
-      break;
-
+  if(result == 0)
     print_expression(expression, 0, 0);
-  }
 
   yylex_destroy(scanner);
 
@@ -148,5 +137,5 @@ VALUE call(VALUE self) {
 void Init_parser() {
   VALUE oxide = rb_define_module("Oxide");
   VALUE parser = rb_define_module_under(oxide, "Parser");
-  rb_define_singleton_method(parser, "call", call, 0);
+  rb_define_singleton_method(parser, "call", call, 1);
 }
