@@ -101,32 +101,40 @@ int yyerror(YYLTYPE *yylloc, yyscan_t scanner, Expression **expression, const ch
   return 0;
 }
 
-VALUE call(VALUE self, VALUE string) {
+int parse_string(char *string, long length, Expression **expression) {
   yyscan_t scanner;
 
   if(yylex_init(&scanner) != 0) {
     perror("Could not initialize lexical analyzer");
-    return Qnil;
+    return 1;
   }
 
-  YY_BUFFER_STATE buffer = yy_scan_string(StringValueCStr(string), scanner);
+  YY_BUFFER_STATE buffer = yy_scan_bytes(string, length, scanner);
 
-  Expression *expression;
-
-  int result = yyparse(scanner, &expression);
+  int result = yyparse(scanner, expression);
 
   yy_delete_buffer(buffer, scanner);
 
-  if(result == 0)
-    print_expression(expression, 0, 0);
-
   yylex_destroy(scanner);
 
-  return Qnil;
+  return result;
+}
+
+VALUE rb_fcall(VALUE self) {
+  VALUE rb_vstring = rb_funcall(self, rb_intern("string"), 0);
+
+  char *string = StringValuePtr(rb_vstring);
+  long length = RSTRING_LEN(rb_vstring);
+  Expression *expression;
+
+  if(parse_string(string, length, &expression) != 0)
+    return Qnil;
+
+  return adapt_expression_to_hash(expression);
 }
 
 void Init_parser() {
-  VALUE oxide = rb_define_module("Oxide");
-  VALUE parser = rb_define_module_under(oxide, "Parser");
-  rb_define_singleton_method(parser, "call", call, 1);
+  VALUE rb_mOxide = rb_define_module("Oxide");
+  VALUE rb_cStringParser = rb_define_class_under(rb_mOxide, "StringParser", rb_cObject);
+  rb_define_method(rb_cStringParser, "call", rb_fcall, 0);
 }

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "expression.h"
+#include "ruby.h"
 
 Expression *create_expression(ExpressionType type, Expression *left, Expression *right, Expressions *expressions, long integer, double floating_point, char *identifier) {
   Expression *expression = (Expression *)malloc(sizeof(Expression));
@@ -20,183 +21,115 @@ Expression *create_expression(ExpressionType type, Expression *left, Expression 
   return expression;
 }
 
-void print_expression(Expression *expression, int level, int element) {
+VALUE adapt_expression_to_hash(Expression *expression) {
   if(expression == NULL)
-    return;
+    return Qnil;
 
-  for(int i = 0; i < level; i++)
-    printf("  ");
-
-  if(element)
-    printf("- ");
+  VALUE rb_vexpression = rb_hash_new();
 
   switch(expression->type) {
     case FALSE_EXPRESSION:
-      printf("type: 'false'\n");
+      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("false")));
       break;
     case TRUE_EXPRESSION:
-      printf("type: 'true'\n");
+      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("true")));
       break;
     case INTEGER_EXPRESSION:
-      printf("type: integer\n");
+      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("integer")));
       break;
     case FLOATING_POINT_EXPRESSION:
-      printf("type: floating_point\n");
+      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("floating_point")));
       break;
     case IDENTIFIER_EXPRESSION:
-      printf("type: identifier\n");
+      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("identifier")));
       break;
     case ASSIGNMENT_EXPRESSION:
-      printf("type: assignment\n");
+      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("assignment")));
       break;
     case ADDITION_ASSIGNMENT_EXPRESSION:
-      printf("type: addition_assignment\n");
+      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("addition_assignment")));
       break;
     case SUBTRACTION_ASSIGNMENT_EXPRESSION:
-      printf("type: subraction_assignment\n");
+      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("subraction_assignment")));
       break;
     case MULTIPLICATION_ASSIGNMENT_EXPRESSION:
-      printf("type: multiplication_assignment\n");
+      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("multiplication_assignment")));
       break;
     case DIVISION_ASSIGNMENT_EXPRESSION:
-      printf("type: division_assignment\n");
+      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("division_assignment")));
       break;
     case MODULO_ASSIGNMENT_EXPRESSION:
-      printf("type: modulo_assignment\n");
+      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("modulo_assignment")));
       break;
     case FUNCTION_EXPRESSION:
-      printf("type: function\n");
+      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("function")));
       break;
     case OR_EXPRESSION:
-      printf("type: or\n");
+      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("or")));
       break;
     case AND_EXPRESSION:
-      printf("type: and\n");
+      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("and")));
       break;
     case EQUAL_EXPRESSION:
-      printf("type: equal\n");
+      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("equal")));
       break;
     case NOT_EQUAL_EXPRESSION:
-      printf("type: not_equal\n");
+      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("not_equal")));
       break;
     case LESS_THAN_EXPRESSION:
-      printf("type: less_than\n");
+      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("less_than")));
       break;
     case LESS_THAN_OR_EQUAL_EXPRESSION:
-      printf("type: less_than_or_equal\n");
+      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("less_than_or_equal")));
       break;
     case GREATER_THAN_EXPRESSION:
-      printf("type: greater_than\n");
+      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("greater_than")));
       break;
     case GREATER_THAN_OR_EQUAL_EXPRESSION:
-      printf("type: greater_than_or_equal\n");
+      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("greater_than_or_equal")));
       break;
     case PIPE_EXPRESSION:
-      printf("type: pipe\n");
+      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("pipe")));
       break;
     case APPLICATION_EXPRESSION:
-      printf("type: application\n");
+      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("application")));
       break;
     case ADDITION_EXPRESSION:
-      printf("type: addition\n");
+      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("addition")));
       break;
     case SUBTRACTION_EXPRESSION:
-      printf("type: subtraction\n");
+      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("subtraction")));
       break;
     case MULTIPLICATION_EXPRESSION:
-      printf("type: multiplication\n");
+      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("multiplication")));
       break;
     case DIVISION_EXPRESSION:
-      printf("type: division\n");
+      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("division")));
       break;
     case MODULO_EXPRESSION:
-      printf("type: modulo\n");
+      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("modulo")));
       break;
     case EXPRESSIONS_EXPRESSION:
-      printf("type: expressions\n");
+      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("expressions")));
       break;
   }
 
-  switch(expression->type) {
-    case INTEGER_EXPRESSION:
-      for(int i = 0; i < level; i++)
-        printf("  ");
-      if(element)
-        printf("  ");
-      printf("integer: %li\n", expression->integer);
-      break;
-    case FLOATING_POINT_EXPRESSION:
-      for(int i = 0; i < level; i++)
-        printf("  ");
-      if(element)
-        printf("  ");
-      printf("floating_point: %lf\n", expression->floating_point);
-      break;
-    case IDENTIFIER_EXPRESSION:
-      for(int i = 0; i < level; i++)
-        printf("  ");
-      if(element)
-        printf("  ");
-      printf("identifier: %s\n", expression->identifier);
-      break;
-    case ASSIGNMENT_EXPRESSION:
-    case ADDITION_ASSIGNMENT_EXPRESSION:
-    case SUBTRACTION_ASSIGNMENT_EXPRESSION:
-    case MULTIPLICATION_ASSIGNMENT_EXPRESSION:
-    case DIVISION_ASSIGNMENT_EXPRESSION:
-    case MODULO_ASSIGNMENT_EXPRESSION:
-    case FUNCTION_EXPRESSION:
-      for(int i = 0; i < level; i++)
-        printf("  ");
-      if(element)
-        printf("  ");
-      printf("identifier: %s\n", expression->identifier);
-      for(int i = 0; i < level; i++)
-        printf("  ");
-      if(element)
-        printf("  ");
-      printf("right:\n");
-      print_expression(expression->right, level + element + 1, 0);
-      break;
-    case OR_EXPRESSION:
-    case AND_EXPRESSION:
-    case EQUAL_EXPRESSION:
-    case NOT_EQUAL_EXPRESSION:
-    case LESS_THAN_EXPRESSION:
-    case LESS_THAN_OR_EQUAL_EXPRESSION:
-    case GREATER_THAN_EXPRESSION:
-    case GREATER_THAN_OR_EQUAL_EXPRESSION:
-    case PIPE_EXPRESSION:
-    case APPLICATION_EXPRESSION:
-    case ADDITION_EXPRESSION:
-    case SUBTRACTION_EXPRESSION:
-    case MULTIPLICATION_EXPRESSION:
-    case DIVISION_EXPRESSION:
-    case MODULO_EXPRESSION:
-      for(int i = 0; i < level; i++)
-        printf("  ");
-      if(element)
-        printf("  ");
-      printf("left:\n");
-      print_expression(expression->left, level + element + 1, 0);
-      for(int i = 0; i < level; i++)
-        printf("  ");
-      if(element)
-        printf("  ");
-      printf("right:\n");
-      print_expression(expression->right, level + element + 1, 0);
-      break;
-    case EXPRESSIONS_EXPRESSION:
-      for(int i = 0; i < level; i++)
-        printf("  ");
-      if(element)
-        printf("  ");
-      printf("expressions:\n");
-      print_expressions(expression->expressions, level + element + 1);
-      break;
-    default:
-      break;
-  }
+  if(expression->left != NULL)
+    rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("left")), adapt_expression_to_hash(expression->left));
+
+  if(expression->right != NULL)
+    rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("right")), adapt_expression_to_hash(expression->right));
+
+  if(expression->expressions != NULL)
+    rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("expressions")), adapt_expressions_to_hash(expression->expressions));
+
+  rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("integer")), INT2NUM(expression->integer));
+  rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("floating_point")), rb_float_new(expression->floating_point));
+
+  if(expression->identifier != NULL)
+    rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("identifier")), rb_str_new2(expression->identifier));
+
+  return rb_vexpression;
 }
 
 void delete_expression(Expression *expression) {

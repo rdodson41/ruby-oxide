@@ -4,6 +4,7 @@
 typedef struct Expression Expression;
 
 #include "expressions.h"
+#include "ruby.h"
 
 #define create_false_expression()                                      (create_expression(FALSE_EXPRESSION, NULL, NULL, NULL, 0, 0, NULL))
 #define create_true_expression()                                       (create_expression(TRUE_EXPRESSION, NULL, NULL, NULL, 0, 0, NULL))
@@ -78,7 +79,7 @@ typedef struct Expression {
 
 Expression *create_expression(ExpressionType type, Expression *left, Expression *right, Expressions *expressions, long integer, double floating_point, char *identifier);
 
-void print_expression(Expression *expression, int level, int element);
+VALUE adapt_expression_to_hash(Expression *expression);
 
 void delete_expression(Expression *expression);
 
