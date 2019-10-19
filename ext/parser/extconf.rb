@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require('mkmf')
 
 SRC_EXT << %w[l y]
