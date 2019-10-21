@@ -1,22 +1,23 @@
 #ifndef __EXPRESSIONS_H__
 #define __EXPRESSIONS_H__
 
+#include <ruby.h>
+#include <stdlib.h>
+
 typedef struct Expressions Expressions;
 
 #include "expression.h"
-#include "ruby.h"
 
-#define create_expressions_expressions(expressions, expression) (create_expressions((expressions), (expression)))
-#define create_expression_expressions(expression)               (create_expressions(NULL, (expression)))
+#define create_expression_expressions(expression) (create_expressions(NULL, (expression)))
 
-typedef struct Expressions {
-  Expressions *left;
-  Expression *right;
-} Expressions;
+struct Expressions {
+  Expressions *expressions;
+  Expression *expression;
+};
 
-Expressions *create_expressions(Expressions *left, Expression *right);
+Expressions *create_expressions(Expressions *expressions, Expression *expression);
 
-VALUE adapt_expressions_to_hash(Expressions *expressions);
+VALUE expressions_to_hash(Expressions *expressions);
 
 void delete_expressions(Expressions *expressions);
 

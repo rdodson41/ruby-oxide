@@ -1,33 +1,34 @@
-#include <stdio.h>
+#include <ruby.h>
 #include <stdlib.h>
 
 #include "expression.h"
-#include "ruby.h"
+#include "expressions.h"
 
-Expression *create_expression(ExpressionType type, Expression *left, Expression *right, Expressions *expressions, long integer, double floating_point, char *identifier) {
-  Expression *expression = (Expression *)malloc(sizeof(Expression));
+Expression *create_expression(ExpressionType type, long integer, double floating_point, char *identifier, Expression *expression, Expression *left, Expression *right, Expressions *expressions) {
+  Expression *this = (Expression *)malloc(sizeof(Expression));
 
-  if(expression == NULL)
+  if(this == NULL)
     return NULL;
 
-  expression->type = type;
-  expression->left = left;
-  expression->right = right;
-  expression->expressions = expressions;
-  expression->integer = integer;
-  expression->floating_point = floating_point;
-  expression->identifier = identifier;
+  this->type = type;
+  this->integer = integer;
+  this->floating_point = floating_point;
+  this->identifier = identifier;
+  this->expression = expression;
+  this->left = left;
+  this->right = right;
+  this->expressions = expressions;
 
-  return expression;
+  return this;
 }
 
-VALUE adapt_expression_to_hash(Expression *expression) {
-  if(expression == NULL)
+VALUE expression_to_hash(Expression *this) {
+  if(this == NULL)
     return Qnil;
 
   VALUE rb_vexpression = rb_hash_new();
 
-  switch(expression->type) {
+  switch(this->type) {
     case FALSE_EXPRESSION:
       rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("false")));
       break;
@@ -114,34 +115,72 @@ VALUE adapt_expression_to_hash(Expression *expression) {
       break;
   }
 
-  if(expression->left != NULL)
-    rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("left")), adapt_expression_to_hash(expression->left));
-
-  if(expression->right != NULL)
-    rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("right")), adapt_expression_to_hash(expression->right));
-
-  if(expression->expressions != NULL)
-    rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("expressions")), adapt_expressions_to_hash(expression->expressions));
-
-  rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("integer")), INT2NUM(expression->integer));
-  rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("floating_point")), rb_float_new(expression->floating_point));
-
-  if(expression->identifier != NULL)
-    rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("identifier")), rb_str_new2(expression->identifier));
+  switch(this->type) {
+    case INTEGER_EXPRESSION:
+      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("integer")), INT2NUM(this->integer));
+      break;
+    case FLOATING_POINT_EXPRESSION:
+      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("floating_point")), rb_float_new(this->floating_point));
+      break;
+    case IDENTIFIER_EXPRESSION:
+      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("identifier")), rb_str_new2(this->identifier));
+      break;
+    case ASSIGNMENT_EXPRESSION:
+    case ADDITION_ASSIGNMENT_EXPRESSION:
+    case SUBTRACTION_ASSIGNMENT_EXPRESSION:
+    case MULTIPLICATION_ASSIGNMENT_EXPRESSION:
+    case DIVISION_ASSIGNMENT_EXPRESSION:
+    case MODULO_ASSIGNMENT_EXPRESSION:
+    case FUNCTION_EXPRESSION:
+      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("identifier")), rb_str_new2(this->identifier));
+      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("expression")), expression_to_hash(this->expression));
+      break;
+    case OR_EXPRESSION:
+    case AND_EXPRESSION:
+    case EQUAL_EXPRESSION:
+    case NOT_EQUAL_EXPRESSION:
+    case LESS_THAN_EXPRESSION:
+    case LESS_THAN_OR_EQUAL_EXPRESSION:
+    case GREATER_THAN_EXPRESSION:
+    case GREATER_THAN_OR_EQUAL_EXPRESSION:
+    case PIPE_EXPRESSION:
+    case APPLICATION_EXPRESSION:
+    case ADDITION_EXPRESSION:
+    case SUBTRACTION_EXPRESSION:
+    case MULTIPLICATION_EXPRESSION:
+    case DIVISION_EXPRESSION:
+    case MODULO_EXPRESSION:
+      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("left")), expression_to_hash(this->left));
+      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("right")), expression_to_hash(this->right));
+      break;
+    case EXPRESSIONS_EXPRESSION:
+      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("expressions")), expressions_to_hash(this->expressions));
+      break;
+    default:
+      break;
+  }
 
   return rb_vexpression;
 }
 
-void delete_expression(Expression *expression) {
-  if(expression == NULL)
+void delete_expression(Expression *this) {
+  if(this == NULL)
     return;
 
-  delete_expression(expression->left);
-  delete_expression(expression->right);
-  delete_expressions(expression->expressions);
+  if(this->identifier != NULL)
+    free(this->identifier);
 
-  if(expression->identifier != NULL)
-    free(expression->identifier);
+  if(this->expression != NULL)
+    delete_expression(this->expression);
 
-  free(expression);
+  if(this->left != NULL)
+    delete_expression(this->left);
+
+  if(this->right != NULL)
+    delete_expression(this->right);
+
+  if(this->expressions != NULL)
+    delete_expressions(this->expressions);
+
+  free(this);
 }

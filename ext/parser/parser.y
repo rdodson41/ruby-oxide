@@ -90,8 +90,8 @@ expression
   ;
 
 expressions
-  : expressions expression                            { $$ = create_expressions_expressions($1, $2); }
-  | expression                                        { $$ = create_expression_expressions($1); }
+  : expression                                        { $$ = create_expression_expressions($1); }
+  | expressions expression                            { $$ = create_expressions($1, $2); }
   ;
 
 %%
@@ -123,14 +123,12 @@ int parse_string(char *string, long length, Expression **expression) {
 VALUE rb_fcall(VALUE self) {
   VALUE rb_vstring = rb_funcall(self, rb_intern("string"), 0);
 
-  char *string = StringValuePtr(rb_vstring);
-  long length = RSTRING_LEN(rb_vstring);
   Expression *expression;
 
-  if(parse_string(string, length, &expression) != 0)
+  if(parse_string(StringValuePtr(rb_vstring), RSTRING_LEN(rb_vstring), &expression) != 0)
     return Qnil;
 
-  return adapt_expression_to_hash(expression);
+  return expression_to_hash(expression);
 }
 
 void Init_parser() {

@@ -10,6 +10,8 @@
   yylloc->last_column = yycolumn + (int)yyleng; \
   yycolumn += yyleng;
 
+_Noreturn void yy_fatal_error(yyconst char *message, yyscan_t scanner);
+
 %}
 
 %option bison-bridge

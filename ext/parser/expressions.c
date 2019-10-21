@@ -1,42 +1,45 @@
-#include <stdio.h>
+#include <ruby.h>
 #include <stdlib.h>
 
+#include "expression.h"
 #include "expressions.h"
-#include "ruby.h"
 
-Expressions *create_expressions(Expressions *left, Expression *right) {
-  Expressions *expressions = (Expressions *)malloc(sizeof(Expressions));
+Expressions *create_expressions(Expressions *expressions, Expression *expression) {
+  Expressions *this = (Expressions *)malloc(sizeof(Expressions));
 
-  if(expressions == NULL)
+  if(this == NULL)
     return NULL;
 
-  expressions->left = left;
-  expressions->right = right;
+  this->expressions = expressions;
+  this->expression = expression;
 
-  return expressions;
+  return this;
 }
 
-VALUE adapt_expressions_to_hash(Expressions *expressions) {
-  if(expressions == NULL)
+VALUE expressions_to_hash(Expressions *this) {
+  if(this == NULL)
     return Qnil;
 
   VALUE rb_vexpressions = rb_hash_new();
 
-  if(expressions->left != NULL)
-    rb_funcall(rb_vexpressions, rb_intern("[]="), 2, ID2SYM(rb_intern("left")), adapt_expressions_to_hash(expressions->left));
+  if(this->expressions != NULL)
+    rb_funcall(rb_vexpressions, rb_intern("[]="), 2, ID2SYM(rb_intern("expressions")), expressions_to_hash(this->expressions));
 
-  if(expressions->right != NULL)
-    rb_funcall(rb_vexpressions, rb_intern("[]="), 2, ID2SYM(rb_intern("right")), adapt_expression_to_hash(expressions->right));
+  if(this->expression != NULL)
+    rb_funcall(rb_vexpressions, rb_intern("[]="), 2, ID2SYM(rb_intern("expression")), expression_to_hash(this->expression));
 
   return rb_vexpressions;
 }
 
-void delete_expressions(Expressions *expressions) {
-  if(expressions == NULL)
+void delete_expressions(Expressions *this) {
+  if(this == NULL)
     return;
 
-  delete_expressions(expressions->left);
-  delete_expression(expressions->right);
+  if(this->expressions != NULL)
+    delete_expressions(this->expressions);
 
-  free(expressions);
+  if(this->expression != NULL)
+    delete_expression(this->expression);
+
+  free(this);
 }
