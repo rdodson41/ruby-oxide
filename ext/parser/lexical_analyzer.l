@@ -1,6 +1,5 @@
 %{
 
-#include "expression.h"
 #include "parser.h"
 
 #define YY_USER_ACTION \
@@ -24,8 +23,7 @@ _Noreturn void yy_fatal_error(yyconst char *message, yyscan_t scanner);
 
 %%
 
-[\t\r ]
-[\n]                                                      { yycolumn = 0; }
+[\t\n\r ]
 [#].*
 "false"                                                   { return FALSE; }
 "true"                                                    { return TRUE; }
