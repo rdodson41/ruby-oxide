@@ -6,17 +6,17 @@
   Expressions *expressions;
 }
 
-%token                  FALSE
-%token                  TRUE
-%token <integer>        INTEGER
-%token <floating_point> FLOATING_POINT
-%token <identifier>     IDENTIFIER
+%token                  FALSE_TOKEN
+%token                  TRUE_TOKEN
+%token <integer>        INTEGER_TOKEN
+%token <floating_point> FLOATING_POINT_TOKEN
+%token <identifier>     IDENTIFIER_TOKEN
 
-%right '=' EQUALS_ADDED_TO EQUALS_SUBTRACTED_FROM EQUALS_MULTIPLIED_BY EQUALS_DIVIDED_BY EQUALS_MODULO IS_MAPPED_TO
-%left OR
-%left AND
-%left IS_EQUAL_TO IS_NOT_EQUAL_TO
-%left '<' IS_LESS_THAN_OR_EQUAL_TO '>' IS_GREATER_THAN_OR_EQUAL_TO
+%right '=' ADDITION_ASSIGNMENT_TOKEN SUBTRACTION_ASSIGNMENT_TOKEN MULTIPLICATION_ASSIGNMENT_TOKEN DIVISION_ASSIGNMENT_TOKEN MODULO_ASSIGNMENT_TOKEN MAPPED_TO_TOKEN
+%left LOGICAL_OR_TOKEN
+%left LOGICAL_AND_TOKEN
+%left EQUAL_TO_TOKEN NOT_EQUAL_TO_TOKEN
+%left '<' LESS_THAN_OR_EQUAL_TO_TOKEN '>' GREATER_THAN_OR_EQUAL_TO_TOKEN
 %left '|'
 %left '$'
 %left '+' '-'
@@ -54,44 +54,44 @@
 %%
 
 input
-  : expression                                        { *expression = $1; }
+  : expression                                                  { *expression = $1; }
   ;
 
 expression
-  : FALSE                                             { $$ = create_false_expression(); }
-  | TRUE                                              { $$ = create_true_expression(); }
-  | INTEGER                                           { $$ = create_integer_expression($1); }
-  | FLOATING_POINT                                    { $$ = create_floating_point_expression($1); }
-  | IDENTIFIER                                        { $$ = create_identifier_expression($1); }
-  | IDENTIFIER '=' expression                         { $$ = create_assignment_expression($1, $3); }
-  | IDENTIFIER EQUALS_ADDED_TO expression             { $$ = create_addition_assignment_expression($1, $3); }
-  | IDENTIFIER EQUALS_SUBTRACTED_FROM expression      { $$ = create_subtraction_assignment_expression($1, $3); }
-  | IDENTIFIER EQUALS_MULTIPLIED_BY expression        { $$ = create_multiplication_assignment_expression($1, $3); }
-  | IDENTIFIER EQUALS_DIVIDED_BY expression           { $$ = create_division_assignment_expression($1, $3); }
-  | IDENTIFIER EQUALS_MODULO expression               { $$ = create_modulo_assignment_expression($1, $3); }
-  | IDENTIFIER IS_MAPPED_TO expression                { $$ = create_function_expression($1, $3); }
-  | expression OR expression                          { $$ = create_or_expression($1, $3); }
-  | expression AND expression                         { $$ = create_and_expression($1, $3); }
-  | expression IS_EQUAL_TO expression                 { $$ = create_equal_expression($1, $3); }
-  | expression IS_NOT_EQUAL_TO expression             { $$ = create_not_equal_expression($1, $3); }
-  | expression '<' expression                         { $$ = create_less_than_expression($1, $3); }
-  | expression IS_LESS_THAN_OR_EQUAL_TO expression    { $$ = create_less_than_or_equal_expression($1, $3); }
-  | expression '>' expression                         { $$ = create_greater_than_expression($1, $3); }
-  | expression IS_GREATER_THAN_OR_EQUAL_TO expression { $$ = create_greater_than_or_equal_expression($1, $3); }
-  | expression '|' expression                         { $$ = create_pipe_expression($1, $3); }
-  | expression '$' expression                         { $$ = create_application_expression($1, $3); }
-  | expression '+' expression                         { $$ = create_addition_expression($1, $3); }
-  | expression '-' expression                         { $$ = create_subtraction_expression($1, $3); }
-  | expression '*' expression                         { $$ = create_multiplication_expression($1, $3); }
-  | expression '/' expression                         { $$ = create_division_expression($1, $3); }
-  | expression '%' expression                         { $$ = create_modulo_expression($1, $3); }
-  | '(' expression ')'                                { $$ = create_expression_expression($2); }
-  | '{' expressions '}'                               { $$ = create_expressions_expression($2); }
+  : FALSE_TOKEN                                                 { $$ = create_false_expression(); }
+  | TRUE_TOKEN                                                  { $$ = create_true_expression(); }
+  | INTEGER_TOKEN                                               { $$ = create_integer_expression($1); }
+  | FLOATING_POINT_TOKEN                                        { $$ = create_floating_point_expression($1); }
+  | IDENTIFIER_TOKEN                                            { $$ = create_identifier_expression($1); }
+  | IDENTIFIER_TOKEN '=' expression                             { $$ = create_assignment_expression($1, $3); }
+  | IDENTIFIER_TOKEN ADDITION_ASSIGNMENT_TOKEN expression       { $$ = create_addition_assignment_expression($1, $3); }
+  | IDENTIFIER_TOKEN SUBTRACTION_ASSIGNMENT_TOKEN expression    { $$ = create_subtraction_assignment_expression($1, $3); }
+  | IDENTIFIER_TOKEN MULTIPLICATION_ASSIGNMENT_TOKEN expression { $$ = create_multiplication_assignment_expression($1, $3); }
+  | IDENTIFIER_TOKEN DIVISION_ASSIGNMENT_TOKEN expression       { $$ = create_division_assignment_expression($1, $3); }
+  | IDENTIFIER_TOKEN MODULO_ASSIGNMENT_TOKEN expression         { $$ = create_modulo_assignment_expression($1, $3); }
+  | IDENTIFIER_TOKEN MAPPED_TO_TOKEN expression                 { $$ = create_function_expression($1, $3); }
+  | expression LOGICAL_OR_TOKEN expression                      { $$ = create_or_expression($1, $3); }
+  | expression LOGICAL_AND_TOKEN expression                     { $$ = create_and_expression($1, $3); }
+  | expression EQUAL_TO_TOKEN expression                        { $$ = create_equal_expression($1, $3); }
+  | expression NOT_EQUAL_TO_TOKEN expression                    { $$ = create_not_equal_expression($1, $3); }
+  | expression '<' expression                                   { $$ = create_less_than_expression($1, $3); }
+  | expression LESS_THAN_OR_EQUAL_TO_TOKEN expression           { $$ = create_less_than_or_equal_expression($1, $3); }
+  | expression '>' expression                                   { $$ = create_greater_than_expression($1, $3); }
+  | expression GREATER_THAN_OR_EQUAL_TO_TOKEN expression        { $$ = create_greater_than_or_equal_expression($1, $3); }
+  | expression '|' expression                                   { $$ = create_pipe_expression($1, $3); }
+  | expression '$' expression                                   { $$ = create_application_expression($1, $3); }
+  | expression '+' expression                                   { $$ = create_addition_expression($1, $3); }
+  | expression '-' expression                                   { $$ = create_subtraction_expression($1, $3); }
+  | expression '*' expression                                   { $$ = create_multiplication_expression($1, $3); }
+  | expression '/' expression                                   { $$ = create_division_expression($1, $3); }
+  | expression '%' expression                                   { $$ = create_modulo_expression($1, $3); }
+  | '(' expression ')'                                          { $$ = create_expression_expression($2); }
+  | '{' expressions '}'                                         { $$ = create_expressions_expression($2); }
   ;
 
 expressions
-  : expression                                        { $$ = create_expression_expressions($1); }
-  | expressions expression                            { $$ = create_expressions($1, $2); }
+  : expression                                                  { $$ = create_expression_expressions($1); }
+  | expressions expression                                      { $$ = create_expressions($1, $2); }
   ;
 
 %%
