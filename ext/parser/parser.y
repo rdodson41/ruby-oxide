@@ -30,10 +30,12 @@
 %code {
   #include "lexical_analyzer.h"
 
-  int yyerror(YYLTYPE *yylloc, yyscan_t scanner, Expression **expression, const char *message);
+  void yyerror(YYLTYPE *yylloc, yyscan_t scanner, Expression **expression, const char *message);
 }
 
 %code requires {
+  #include <ruby.h>
+
   #include "expression.h"
   #include "expressions.h"
 }
@@ -65,15 +67,15 @@ expression
   | IDENTIFIER_TOKEN MULTIPLICATION_ASSIGNMENT_TOKEN expression { $$ = create_multiplication_assignment_expression($1, $3); }
   | IDENTIFIER_TOKEN DIVISION_ASSIGNMENT_TOKEN expression       { $$ = create_division_assignment_expression($1, $3); }
   | IDENTIFIER_TOKEN MODULO_ASSIGNMENT_TOKEN expression         { $$ = create_modulo_assignment_expression($1, $3); }
-  | IDENTIFIER_TOKEN MAPPED_TO_TOKEN expression                 { $$ = create_function_expression($1, $3); }
-  | expression LOGICAL_OR_TOKEN expression                      { $$ = create_or_expression($1, $3); }
-  | expression LOGICAL_AND_TOKEN expression                     { $$ = create_and_expression($1, $3); }
-  | expression EQUAL_TO_TOKEN expression                        { $$ = create_equal_expression($1, $3); }
-  | expression NOT_EQUAL_TO_TOKEN expression                    { $$ = create_not_equal_expression($1, $3); }
+  | IDENTIFIER_TOKEN MAPPED_TO_TOKEN expression                 { $$ = create_mapped_to_expression($1, $3); }
+  | expression LOGICAL_OR_TOKEN expression                      { $$ = create_logical_or_expression($1, $3); }
+  | expression LOGICAL_AND_TOKEN expression                     { $$ = create_logical_and_expression($1, $3); }
+  | expression EQUAL_TO_TOKEN expression                        { $$ = create_equal_to_expression($1, $3); }
+  | expression NOT_EQUAL_TO_TOKEN expression                    { $$ = create_not_equal_to_expression($1, $3); }
   | expression '<' expression                                   { $$ = create_less_than_expression($1, $3); }
-  | expression LESS_THAN_OR_EQUAL_TO_TOKEN expression           { $$ = create_less_than_or_equal_expression($1, $3); }
+  | expression LESS_THAN_OR_EQUAL_TO_TOKEN expression           { $$ = create_less_than_or_equal_to_expression($1, $3); }
   | expression '>' expression                                   { $$ = create_greater_than_expression($1, $3); }
-  | expression GREATER_THAN_OR_EQUAL_TO_TOKEN expression        { $$ = create_greater_than_or_equal_expression($1, $3); }
+  | expression GREATER_THAN_OR_EQUAL_TO_TOKEN expression        { $$ = create_greater_than_or_equal_to_expression($1, $3); }
   | expression '|' expression                                   { $$ = create_pipe_expression($1, $3); }
   | expression '$' expression                                   { $$ = create_application_expression($1, $3); }
   | expression '+' expression                                   { $$ = create_addition_expression($1, $3); }
@@ -92,9 +94,8 @@ expressions
 
 %%
 
-int yyerror(YYLTYPE *yylloc, yyscan_t scanner, Expression **expression, const char *message) {
+void yyerror(YYLTYPE *yylloc, yyscan_t scanner, Expression **expression, const char *message) {
   fprintf(stderr, "%i:%i: %s\n", yylloc->first_line, yylloc->first_column, message);
-  return 0;
 }
 
 int parse_string(char *string, long length, Expression **expression) {

@@ -1,5 +1,4 @@
 #include <ruby.h>
-#include <stdlib.h>
 
 #include "expression.h"
 #include "expressions.h"
@@ -62,32 +61,32 @@ VALUE expression_to_hash(Expression *this) {
     case MODULO_ASSIGNMENT_EXPRESSION:
       rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("modulo_assignment")));
       break;
-    case FUNCTION_EXPRESSION:
-      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("function")));
+    case MAPPED_TO_EXPRESSION:
+      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("mapped_to")));
       break;
-    case OR_EXPRESSION:
-      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("or")));
+    case LOGICAL_OR_EXPRESSION:
+      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("logical_or")));
       break;
-    case AND_EXPRESSION:
-      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("and")));
+    case LOGICAL_AND_EXPRESSION:
+      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("logical_and")));
       break;
-    case EQUAL_EXPRESSION:
-      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("equal")));
+    case EQUAL_TO_EXPRESSION:
+      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("equal_to")));
       break;
-    case NOT_EQUAL_EXPRESSION:
-      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("not_equal")));
+    case NOT_EQUAL_TO_EXPRESSION:
+      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("not_equal_to")));
       break;
     case LESS_THAN_EXPRESSION:
       rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("less_than")));
       break;
-    case LESS_THAN_OR_EQUAL_EXPRESSION:
-      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("less_than_or_equal")));
+    case LESS_THAN_OR_EQUAL_TO_EXPRESSION:
+      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("less_than_or_equal_to")));
       break;
     case GREATER_THAN_EXPRESSION:
       rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("greater_than")));
       break;
-    case GREATER_THAN_OR_EQUAL_EXPRESSION:
-      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("greater_than_or_equal")));
+    case GREATER_THAN_OR_EQUAL_TO_EXPRESSION:
+      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("greater_than_or_equal_to")));
       break;
     case PIPE_EXPRESSION:
       rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("pipe")));
@@ -131,18 +130,18 @@ VALUE expression_to_hash(Expression *this) {
     case MULTIPLICATION_ASSIGNMENT_EXPRESSION:
     case DIVISION_ASSIGNMENT_EXPRESSION:
     case MODULO_ASSIGNMENT_EXPRESSION:
-    case FUNCTION_EXPRESSION:
+    case MAPPED_TO_EXPRESSION:
       rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("identifier")), rb_str_new2(this->identifier));
       rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("expression")), expression_to_hash(this->expression));
       break;
-    case OR_EXPRESSION:
-    case AND_EXPRESSION:
-    case EQUAL_EXPRESSION:
-    case NOT_EQUAL_EXPRESSION:
+    case LOGICAL_OR_EXPRESSION:
+    case LOGICAL_AND_EXPRESSION:
+    case EQUAL_TO_EXPRESSION:
+    case NOT_EQUAL_TO_EXPRESSION:
     case LESS_THAN_EXPRESSION:
-    case LESS_THAN_OR_EQUAL_EXPRESSION:
+    case LESS_THAN_OR_EQUAL_TO_EXPRESSION:
     case GREATER_THAN_EXPRESSION:
-    case GREATER_THAN_OR_EQUAL_EXPRESSION:
+    case GREATER_THAN_OR_EQUAL_TO_EXPRESSION:
     case PIPE_EXPRESSION:
     case APPLICATION_EXPRESSION:
     case ADDITION_EXPRESSION:

@@ -1,5 +1,4 @@
 #include <ruby.h>
-#include <stdlib.h>
 
 #include "expression.h"
 #include "expressions.h"
