@@ -28,10 +28,6 @@
 %start input
 
 %code {
-  #include <ruby.h>
-  #include <stdio.h>
-  #include <stdlib.h>
-
   #include "lexical_analyzer.h"
 
   int yyerror(YYLTYPE *yylloc, yyscan_t scanner, Expression **expression, const char *message);
