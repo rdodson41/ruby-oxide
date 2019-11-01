@@ -125,7 +125,11 @@ VALUE rb_fcall(VALUE self) {
   if(parse_string(StringValuePtr(rb_vstring), RSTRING_LEN(rb_vstring), &expression) != 0)
     return Qnil;
 
-  return expression_to_hash(expression);
+  VALUE rb_vhash = expression_to_hash(expression);
+
+  delete_expression(expression);
+
+  return rb_vhash;
 }
 
 void Init_parser() {
