@@ -98,42 +98,36 @@ void yyerror(YYLTYPE *yylloc, yyscan_t scanner, Expression **expression, const c
   fprintf(stderr, "%i:%i: %s\n", yylloc->first_line, yylloc->first_column, message);
 }
 
-int parse_string(char *string, long length, Expression **expression) {
+VALUE rb_fcall_parser(VALUE rb_vparser) {
+  VALUE rb_vinput = rb_funcall(rb_vparser, rb_intern("input"), 0);
+
   yyscan_t scanner;
 
-  if(yylex_init(&scanner) != 0) {
-    perror("Could not initialize lexical analyzer");
-    return 1;
-  }
+  if(yylex_init(&scanner) != 0)
+    return Qnil;
 
-  YY_BUFFER_STATE buffer = yy_scan_bytes(string, length, scanner);
+  YY_BUFFER_STATE buffer = yy_scan_bytes(StringValuePtr(rb_vinput), RSTRING_LEN(rb_vinput), scanner);
 
-  int result = yyparse(scanner, expression);
+  Expression *expression;
+
+  int result = yyparse(scanner, &expression);
 
   yy_delete_buffer(buffer, scanner);
 
   yylex_destroy(scanner);
 
-  return result;
-}
-
-VALUE rb_fcall(VALUE self) {
-  VALUE rb_vstring = rb_funcall(self, rb_intern("string"), 0);
-
-  Expression *expression;
-
-  if(parse_string(StringValuePtr(rb_vstring), RSTRING_LEN(rb_vstring), &expression) != 0)
+  if(result != 0)
     return Qnil;
 
-  VALUE rb_vhash = expression_to_hash(expression);
+  VALUE rb_vsyntax_tree = expression_to_hash(expression);
 
   delete_expression(expression);
 
-  return rb_vhash;
+  return rb_vsyntax_tree;
 }
 
 void Init_parser() {
   VALUE rb_mOxide = rb_define_module("Oxide");
-  VALUE rb_cStringParser = rb_define_class_under(rb_mOxide, "StringParser", rb_cObject);
-  rb_define_method(rb_cStringParser, "call", rb_fcall, 0);
+  VALUE rb_cParser = rb_define_class_under(rb_mOxide, "Parser", rb_cObject);
+  rb_define_method(rb_cParser, "call", rb_fcall_parser, 0);
 }
