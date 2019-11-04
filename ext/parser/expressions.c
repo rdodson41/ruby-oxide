@@ -15,11 +15,11 @@ Expressions *create_expressions(Expressions *expressions, Expression *expression
   return this;
 }
 
-VALUE expressions_to_hash(Expressions *this) {
+VALUE expressions_to_hash(const Expressions *this) {
   if(this == NULL)
     return Qnil;
 
-  VALUE rb_vexpressions = rb_hash_new();
+  const VALUE rb_vexpressions = rb_hash_new();
 
   if(this->expressions != NULL)
     rb_funcall(rb_vexpressions, rb_intern("[]="), 2, ID2SYM(rb_intern("expressions")), expressions_to_hash(this->expressions));

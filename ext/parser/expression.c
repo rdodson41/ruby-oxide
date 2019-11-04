@@ -3,7 +3,7 @@
 #include "expression.h"
 #include "expressions.h"
 
-Expression *create_expression(ExpressionType type, long integer, double floating_point, char *identifier, Expression *expression, Expression *left, Expression *right, Expressions *expressions) {
+Expression *create_expression(const ExpressionType type, const long integer, const double floating_point, char *identifier, Expression *expression, Expression *left, Expression *right, Expressions *expressions) {
   Expression *this = (Expression *)malloc(sizeof(Expression));
 
   if(this == NULL)
@@ -21,11 +21,11 @@ Expression *create_expression(ExpressionType type, long integer, double floating
   return this;
 }
 
-VALUE expression_to_hash(Expression *this) {
+VALUE expression_to_hash(const Expression *this) {
   if(this == NULL)
     return Qnil;
 
-  VALUE rb_vexpression = rb_hash_new();
+  const VALUE rb_vexpression = rb_hash_new();
 
   switch(this->type) {
     case FALSE_EXPRESSION:

@@ -77,9 +77,9 @@ struct Expression {
   Expressions *expressions;
 };
 
-Expression *create_expression(ExpressionType type, long integer, double floating_point, char *identifier, Expression *expression, Expression *left, Expression *right, Expressions *expressions);
+Expression *create_expression(const ExpressionType type, const long integer, const double floating_point, char *identifier, Expression *expression, Expression *left, Expression *right, Expressions *expressions);
 
-VALUE expression_to_hash(Expression *this);
+VALUE expression_to_hash(const Expression *this);
 
 void delete_expression(Expression *this);
 

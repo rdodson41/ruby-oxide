@@ -30,7 +30,11 @@
 %code {
   #include "lexical_analyzer.h"
 
-  void yyerror(YYLTYPE *yylloc, yyscan_t scanner, Expression **expression, const char *message);
+  void yyerror(const YYLTYPE *yylloc, const yyscan_t scanner, Expression **expression, const char *message);
+
+  VALUE rb_fcall_parser(const VALUE rb_vparser);
+
+  void Init_parser();
 }
 
 %code requires {
@@ -94,11 +98,11 @@ expressions
 
 %%
 
-void yyerror(YYLTYPE *yylloc, yyscan_t scanner, Expression **expression, const char *message) {
+void yyerror(const YYLTYPE *yylloc, const yyscan_t scanner, Expression **expression, const char *message) {
   fprintf(stderr, "%i:%i: %s\n", yylloc->first_line, yylloc->first_column, message);
 }
 
-VALUE rb_fcall_parser(VALUE rb_vparser) {
+VALUE rb_fcall_parser(const VALUE rb_vparser) {
   VALUE rb_vinput = rb_funcall(rb_vparser, rb_intern("input"), 0);
 
   yyscan_t scanner;
@@ -106,11 +110,11 @@ VALUE rb_fcall_parser(VALUE rb_vparser) {
   if(yylex_init(&scanner) != 0)
     return Qnil;
 
-  YY_BUFFER_STATE buffer = yy_scan_bytes(StringValuePtr(rb_vinput), RSTRING_LEN(rb_vinput), scanner);
+  const YY_BUFFER_STATE buffer = yy_scan_bytes(StringValuePtr(rb_vinput), RSTRING_LEN(rb_vinput), scanner);
 
   Expression *expression;
 
-  int result = yyparse(scanner, &expression);
+  const int result = yyparse(scanner, &expression);
 
   yy_delete_buffer(buffer, scanner);
 
@@ -119,7 +123,7 @@ VALUE rb_fcall_parser(VALUE rb_vparser) {
   if(result != 0)
     return Qnil;
 
-  VALUE rb_vsyntax_tree = expression_to_hash(expression);
+  const VALUE rb_vsyntax_tree = expression_to_hash(expression);
 
   delete_expression(expression);
 
@@ -127,7 +131,7 @@ VALUE rb_fcall_parser(VALUE rb_vparser) {
 }
 
 void Init_parser() {
-  VALUE rb_mOxide = rb_define_module("Oxide");
-  VALUE rb_cParser = rb_define_class_under(rb_mOxide, "Parser", rb_cObject);
+  const VALUE rb_mOxide = rb_define_module("Oxide");
+  const VALUE rb_cParser = rb_define_class_under(rb_mOxide, "Parser", rb_cObject);
   rb_define_method(rb_cParser, "call", rb_fcall_parser, 0);
 }

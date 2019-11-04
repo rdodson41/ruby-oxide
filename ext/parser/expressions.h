@@ -13,7 +13,7 @@ struct Expressions {
 
 Expressions *create_expressions(Expressions *expressions, Expression *expression);
 
-VALUE expressions_to_hash(Expressions *expressions);
+VALUE expressions_to_hash(const Expressions *expressions);
 
 void delete_expressions(Expressions *expressions);
 
