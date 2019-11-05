@@ -105,7 +105,7 @@ static VALUE rb_fcall_parser(const VALUE rb_vparser) {
   Expression *expression;
 
   if(yyparse(scanner, &expression) != 0)
-    rb_raise(rb_eRuntimeError, "%s", strerror(errno));
+    rb_raise(rb_eRuntimeError, "Could not parse input");
 
   const VALUE rb_vsyntax_tree = expression_to_hash(expression);
 
