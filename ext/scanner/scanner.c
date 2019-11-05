@@ -1,13 +1,7 @@
 #include <ruby.h>
-#include <sys/errno.h>
+#include <errno.h>
 
-int yylex_init(void **scanner);
-
-void *yy_scan_bytes(const char *bytes, size_t length, void *scanner);
-
-void yy_delete_buffer(void *buffer, void *scanner);
-
-int yylex_destroy(void *scanner);
+#include "lexical_analyzer.h"
 
 static void delete_scanner(void *scanner) {
 	yylex_destroy(scanner);
@@ -41,21 +35,9 @@ void *unwrap_scanner(const VALUE rb_vscanner) {
 	return scanner;
 }
 
-static VALUE rb_fscan_string(const VALUE rb_vscanner, VALUE rb_vinput) {
-	void *scanner = unwrap_scanner(rb_vscanner);
-	void *buffer = yy_scan_bytes(StringValuePtr(rb_vinput), RSTRING_LEN(rb_vinput), scanner);
-
-	const VALUE rb_vresult = rb_yield(rb_vscanner);
-
-	yy_delete_buffer(buffer, scanner);
-
-	return rb_vresult;
-}
-
 void Init_scanner() {
   const VALUE rb_mOxide = rb_define_module("Oxide");
   const VALUE rb_cScanner = rb_define_class_under(rb_mOxide, "Scanner", rb_cObject);
 
 	rb_define_alloc_func(rb_cScanner, rb_fallocate_scanner);
-	rb_define_method(rb_cScanner, "scan_string", rb_fscan_string, 1);
 }
