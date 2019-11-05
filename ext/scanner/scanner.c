@@ -24,13 +24,13 @@ static const rb_data_type_t rb_tscanner = {
 	.flags = RUBY_TYPED_FREE_IMMEDIATELY
 };
 
-static VALUE rb_fallocate_scanner(const VALUE rb_vscanner) {
+static VALUE rb_fallocate_scanner(const VALUE rb_cScanner) {
   void *scanner;
 
   if(yylex_init(&scanner) != 0)
     rb_raise(rb_eRuntimeError, "%s", strerror(errno));
 
-	return TypedData_Wrap_Struct(rb_vscanner, &rb_tscanner, scanner);
+	return TypedData_Wrap_Struct(rb_cScanner, &rb_tscanner, scanner);
 }
 
 void *unwrap_scanner(const VALUE rb_vscanner) {
