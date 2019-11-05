@@ -29,12 +29,9 @@
 
 %code {
   #include "lexical_analyzer.h"
+  #include "scanner.h"
 
   void yyerror(const YYLTYPE *yylloc, const yyscan_t scanner, Expression **expression, const char *message);
-
-  VALUE rb_fcall_parser(const VALUE rb_vparser);
-
-  void Init_parser();
 }
 
 %code requires {
@@ -102,20 +99,13 @@ void yyerror(const YYLTYPE *yylloc, const yyscan_t scanner, Expression **express
   fprintf(stderr, "%i:%i: %s\n", yylloc->first_line, yylloc->first_column, message);
 }
 
-VALUE rb_fcall_parser(const VALUE rb_vparser) {
-  yyscan_t scanner;
-
-  if(yylex_init(&scanner) != 0)
-    return Qnil;
+static VALUE rb_fcall_parser(const VALUE rb_vparser) {
+  const yyscan_t scanner = unwrap_scanner(rb_funcall(rb_vparser, rb_intern("scanner"), 0));
 
   Expression *expression;
 
-  const int result = yyparse(scanner, &expression);
-
-  yylex_destroy(scanner);
-
-  if(result != 0)
-    return Qnil;
+  if(yyparse(scanner, &expression) != 0)
+    rb_raise(rb_eRuntimeError, "%s", strerror(errno));
 
   const VALUE rb_vsyntax_tree = expression_to_hash(expression);
 
@@ -127,5 +117,6 @@ VALUE rb_fcall_parser(const VALUE rb_vparser) {
 void Init_parser() {
   const VALUE rb_mOxide = rb_define_module("Oxide");
   const VALUE rb_cParser = rb_define_class_under(rb_mOxide, "Parser", rb_cObject);
+
   rb_define_method(rb_cParser, "call", rb_fcall_parser, 0);
 }
