@@ -103,20 +103,14 @@ void yyerror(const YYLTYPE *yylloc, const yyscan_t scanner, Expression **express
 }
 
 VALUE rb_fcall_parser(const VALUE rb_vparser) {
-  VALUE rb_vinput = rb_funcall(rb_vparser, rb_intern("input"), 0);
-
   yyscan_t scanner;
 
   if(yylex_init(&scanner) != 0)
     return Qnil;
 
-  const YY_BUFFER_STATE buffer = yy_scan_bytes(StringValuePtr(rb_vinput), RSTRING_LEN(rb_vinput), scanner);
-
   Expression *expression;
 
   const int result = yyparse(scanner, &expression);
-
-  yy_delete_buffer(buffer, scanner);
 
   yylex_destroy(scanner);
 
