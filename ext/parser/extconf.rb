@@ -27,7 +27,7 @@ create_makefile('parser/parser') do |config|
     .INTERMEDIATE: $(srcdir)/parser.h
     lexical_analyzer.o: $(srcdir)/parser.h
 
-    .INTERMEDIATE: $(srcdir)/lexical_analyzer.h $(srcdir)/parser.h
-    parser.o: $(srcdir)/lexical_analyzer.h $(srcdir)/parser.h
+    .INTERMEDIATE: $(srcdir)/lexical_analyzer.h
+    parser.o: $(srcdir)/lexical_analyzer.h
   MAKEFILE
 end
