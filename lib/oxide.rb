@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require('oxide/parser')
+require('oxide/scanner')
 require('oxide/version')
 
 module Oxide

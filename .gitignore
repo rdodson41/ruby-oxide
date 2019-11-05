@@ -4,6 +4,7 @@
 /coverage/
 /doc/
 /lib/oxide/parser.bundle
+/lib/oxide/scanner.bundle
 /pkg/
 /spec/reports/
 /tmp/
