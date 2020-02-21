@@ -20,11 +20,15 @@ gem 'oxide'
 
 And then execute:
 
-    bundle install
+```bash
+bundle install
+```
 
 Or install it yourself as:
 
-    gem install oxide
+```bash
+gem install test
+```
 
 ## Development
 
