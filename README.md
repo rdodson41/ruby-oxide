@@ -47,7 +47,8 @@ version, push git commits and tags, and push the `.gem` file to
 Bug reports and pull requests are welcome on GitHub at
 <https://github.com/rdodson41/ruby-oxide>. This project is intended to be a
 safe, welcoming space for collaboration, and contributors are expected to adhere
-to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+to the
+[code of conduct](https://github.com/rdodson41/ruby-oxide/blob/master/CODE_OF_CONDUCT.md).
 
 ## License
 
@@ -56,6 +57,6 @@ The gem is available as open source under the terms of the
 
 ## Code of Conduct
 
-Everyone interacting in the Oxide project’s codebases, issue trackers, chat
+Everyone interacting in the Oxide project's codebases, issue trackers, chat
 rooms and mailing lists is expected to follow the
 [code of conduct](https://github.com/rdodson41/ruby-oxide/blob/master/CODE_OF_CONDUCT.md).
