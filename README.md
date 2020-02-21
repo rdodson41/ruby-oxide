@@ -1,6 +1,7 @@
 # Oxide
 
 [![Gem Version](https://badge.fury.io/rb/oxide.svg)](https://badge.fury.io/rb/oxide)
+![Ruby](https://github.com/rdodson41/ruby-oxide/workflows/Ruby/badge.svg)
 [![Build Status](https://travis-ci.org/rdodson41/ruby-oxide.svg?branch=master)](https://travis-ci.org/rdodson41/ruby-oxide)
 [![Maintainability](https://api.codeclimate.com/v1/badges/021f4ab2eb6f6f4473b5/maintainability)](https://codeclimate.com/github/rdodson41/ruby-oxide/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/021f4ab2eb6f6f4473b5/test_coverage)](https://codeclimate.com/github/rdodson41/ruby-oxide/test_coverage)
