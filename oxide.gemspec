@@ -4,7 +4,7 @@ Gem::Specification.new do |spec|
   spec.name          = 'oxide'
   spec.version       = Oxide::VERSION
   spec.authors       = ['Richard E. Dodson']
-  spec.email         = ['richard.elias.dodson@icloud.com']
+  spec.email         = ['richard.elias.dodson@gmail.com']
 
   spec.summary       = 'An implementation of the Oxide Programming Language ' \
                        'that is written in Ruby.'
