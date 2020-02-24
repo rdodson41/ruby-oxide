@@ -7,9 +7,6 @@ gemspec
 # capabilities.
 gem('pry')
 
-# Step-by-step debugging and stack navigation in Pry
-gem('pry-byebug')
-
 # A make-like build utility for Ruby.
 gem('rake', '~> 12.0')
 
