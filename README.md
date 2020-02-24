@@ -27,7 +27,7 @@ bundle install
 Or install it yourself as:
 
 ```bash
-gem install test
+gem install oxide
 ```
 
 ## Development
