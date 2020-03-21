@@ -10,3 +10,6 @@ Metrics/BlockLength:
 
 Style/Copyright:
   Enabled: false
+
+Style/MissingElse:
+  Enabled: false
