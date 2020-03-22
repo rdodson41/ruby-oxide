@@ -10,7 +10,7 @@ gemspec
 gem('pry')
 
 # A make-like build utility for Ruby.
-gem('rake', '~> 12.0')
+gem('rake', '>= 12.3.3')
 
 # Provide a standard and simplified way to build and package Ruby C and Java
 # extensions using Rake as glue.
