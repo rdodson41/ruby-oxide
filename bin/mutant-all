@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-ag --no-filename --no-break --only-matching '(?<=^RSpec\.describe\()\w+(::\w+)*(?=\))' spec \
-  | xargs bundle exec mutant --use rspec "${@}"
