@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    oxide (0.1.9)
+    oxide (0.1.10)
 
 GEM
   remote: https://rubygems.org/
