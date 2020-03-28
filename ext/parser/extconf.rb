@@ -4,7 +4,9 @@ require('mkmf')
 
 SRC_EXT << %w[l y]
 
-$INCFLAGS << " -I$(srcdir)/../scanner"
+# rubocop:disable Style/GlobalVars
+$INCFLAGS << ' -I$(srcdir)/../scanner'
+# rubocop:enable Style/GlobalVars
 
 create_makefile('parser/parser') do |config|
   config << <<~MAKEFILE.gsub(/  /, "\t")

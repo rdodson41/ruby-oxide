@@ -8,9 +8,6 @@ Metrics/BlockLength:
   Exclude:
     - oxide.gemspec
 
-Rails/Delegate:
-  Enabled: false
-
 Style/Copyright:
   Enabled: false
 
