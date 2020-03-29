@@ -2,4 +2,4 @@
 
 require('mkmf')
 
-create_makefile('scanner/scanner')
+create_makefile('scanner')

@@ -8,7 +8,7 @@ SRC_EXT << %w[l y]
 $INCFLAGS << ' -I$(srcdir)/../scanner'
 # rubocop:enable Style/GlobalVars
 
-create_makefile('parser/parser') do |config|
+create_makefile('parser') do |config|
   config << <<~MAKEFILE.gsub(/  /, "\t")
     YACC := PATH="/usr/local/opt/bison/bin:$${PATH}" bison
 

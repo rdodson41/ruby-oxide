@@ -9,12 +9,7 @@ require('rake/extensiontask')
 
 task(build: :compile)
 
-Rake::ExtensionTask.new('parser') do |ext|
-  ext.lib_dir = 'lib/oxide'
-end
-
-Rake::ExtensionTask.new('scanner') do |ext|
-  ext.lib_dir = 'lib/oxide'
-end
+Rake::ExtensionTask.new('oxide/parser')
+Rake::ExtensionTask.new('oxide/scanner')
 
 task(default: %i[clobber compile spec])
