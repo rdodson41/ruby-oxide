@@ -29,7 +29,6 @@
 
 %code {
   #include "lexical_analyzer.h"
-  #include "scanner.h"
 
   void yyerror(const YYLTYPE *yylloc, const yyscan_t scanner, Expression **expression, const char *message);
 }
@@ -100,7 +99,9 @@ void yyerror(const YYLTYPE *yylloc, const yyscan_t scanner, Expression **express
 }
 
 static VALUE rb_fcall_parser(const VALUE rb_vparser) {
-  const yyscan_t scanner = unwrap_scanner(rb_funcall(rb_vparser, rb_intern("scanner"), 0));
+  yyscan_t scanner;
+
+  Data_Get_Struct(rb_funcall(rb_vparser, rb_intern("scanner"), 0), yyscan_t, scanner);
 
   Expression *expression;
 

@@ -4,10 +4,6 @@ require('mkmf')
 
 SRC_EXT << %w[l y]
 
-# rubocop:disable Style/GlobalVars
-$INCFLAGS << ' -I$(srcdir)/../scanner'
-# rubocop:enable Style/GlobalVars
-
 create_makefile('parser') do |config|
   config << <<~MAKEFILE.gsub(/  /, "\t")
     YACC := PATH="/usr/local/opt/bison/bin:$${PATH}" bison
