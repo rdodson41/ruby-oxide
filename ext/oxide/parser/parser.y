@@ -128,10 +128,22 @@ static VALUE call_parser(const VALUE parser) {
   return syntax_tree;
 }
 
+static VALUE initialize_string_parser(const VALUE string_parser, VALUE input) {
+  yyscan_t scanner;
+
+  Data_Get_Struct(string_parser, yyscan_t, scanner);
+
+  yy_scan_bytes(StringValuePtr(input), RSTRING_LEN(input), scanner);
+
+  return Qnil;
+}
+
 void Init_parser() {
   const VALUE mOxide = rb_define_module("Oxide");
   const VALUE cParser = rb_define_class_under(mOxide, "Parser", rb_cObject);
+  const VALUE cStringParser = rb_define_class_under(mOxide, "StringParser", cParser);
 
   rb_define_alloc_func(cParser, allocate_parser);
   rb_define_method(cParser, "call", call_parser, 0);
+  rb_define_method(cStringParser, "initialize", initialize_string_parser, 1);
 }
