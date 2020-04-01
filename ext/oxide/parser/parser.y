@@ -98,26 +98,40 @@ void yyerror(const YYLTYPE *yylloc, const yyscan_t scanner, Expression **express
   fprintf(stderr, "%i:%i: %s\n", yylloc->first_line, yylloc->first_column, message);
 }
 
-static VALUE rb_fcall_parser(const VALUE rb_vparser) {
+static void deallocate_parser(yyscan_t scanner) {
+  yylex_destroy(scanner);
+}
+
+static VALUE allocate_parser(const VALUE cParser) {
   yyscan_t scanner;
 
-  Data_Get_Struct(rb_funcall(rb_vparser, rb_intern("scanner"), 0), yyscan_t, scanner);
+  if(yylex_init(&scanner) != 0)
+    rb_raise(rb_eRuntimeError, "%s", strerror(errno));
+
+  return Data_Wrap_Struct(cParser, NULL, deallocate_parser, scanner);
+}
+
+static VALUE call_parser(const VALUE parser) {
+  yyscan_t scanner;
+
+  Data_Get_Struct(parser, yyscan_t, scanner);
 
   Expression *expression;
 
   if(yyparse(scanner, &expression) != 0)
     rb_raise(rb_eRuntimeError, "Could not parse input");
 
-  const VALUE rb_vsyntax_tree = expression_to_hash(expression);
+  const VALUE syntax_tree = expression_to_hash(expression);
 
   delete_expression(expression);
 
-  return rb_vsyntax_tree;
+  return syntax_tree;
 }
 
 void Init_parser() {
-  const VALUE rb_mOxide = rb_define_module("Oxide");
-  const VALUE rb_cParser = rb_define_class_under(rb_mOxide, "Parser", rb_cObject);
+  const VALUE mOxide = rb_define_module("Oxide");
+  const VALUE cParser = rb_define_class_under(mOxide, "Parser", rb_cObject);
 
-  rb_define_method(rb_cParser, "call", rb_fcall_parser, 0);
+  rb_define_alloc_func(cParser, allocate_parser);
+  rb_define_method(cParser, "call", call_parser, 0);
 }
