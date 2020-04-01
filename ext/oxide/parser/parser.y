@@ -30,6 +30,7 @@
 %code {
   #include "lexical_analyzer.h"
 
+  void yyset_column(const int column, const yyscan_t scanner);
   void yyerror(const YYLTYPE *yylloc, const yyscan_t scanner, Expression **expression, const char *message);
 }
 
@@ -134,6 +135,9 @@ static VALUE initialize_string_parser(const VALUE string_parser, VALUE input) {
   Data_Get_Struct(string_parser, yyscan_t, scanner);
 
   yy_scan_bytes(StringValuePtr(input), RSTRING_LEN(input), scanner);
+
+  yyset_lineno(1, scanner);
+  yyset_column(1, scanner);
 
   return Qnil;
 }
