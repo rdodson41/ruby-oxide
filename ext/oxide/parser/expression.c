@@ -1,9 +1,8 @@
 #include <ruby.h>
 
 #include "expression.h"
-#include "expressions.h"
 
-Expression *create_expression(const ExpressionType type, const long integer, const double floating_point, char *identifier, Expression *expression, Expression *left, Expression *right, Expressions *expressions) {
+Expression *create_expression(const ExpressionType type, const long integer, const double floating_point, char *identifier, Expression *expression, Expression *left, Expression *right) {
   Expression *this = (Expression *)malloc(sizeof(Expression));
 
   if(this == NULL)
@@ -16,7 +15,6 @@ Expression *create_expression(const ExpressionType type, const long integer, con
   this->expression = expression;
   this->left = left;
   this->right = right;
-  this->expressions = expressions;
 
   return this;
 }
@@ -109,9 +107,6 @@ VALUE expression_to_hash(const Expression *this) {
     case MODULO_EXPRESSION:
       rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("modulo")));
       break;
-    case EXPRESSIONS_EXPRESSION:
-      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("type")), ID2SYM(rb_intern("expressions")));
-      break;
   }
 
   switch(this->type) {
@@ -152,9 +147,6 @@ VALUE expression_to_hash(const Expression *this) {
       rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("left")), expression_to_hash(this->left));
       rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("right")), expression_to_hash(this->right));
       break;
-    case EXPRESSIONS_EXPRESSION:
-      rb_funcall(rb_vexpression, rb_intern("[]="), 2, ID2SYM(rb_intern("expressions")), expressions_to_hash(this->expressions));
-      break;
     default:
       break;
   }
@@ -177,9 +169,6 @@ void delete_expression(Expression *this) {
 
   if(this->right != NULL)
     delete_expression(this->right);
-
-  if(this->expressions != NULL)
-    delete_expressions(this->expressions);
 
   free(this);
 }

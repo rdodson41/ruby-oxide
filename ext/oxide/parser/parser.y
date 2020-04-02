@@ -3,7 +3,6 @@
   double floating_point;
   char *identifier;
   Expression *expression;
-  Expressions *expressions;
 }
 
 %token                  FALSE_TOKEN
@@ -23,7 +22,6 @@
 %left '*' '/' '%'
 
 %nterm <expression> expression
-%nterm <expressions> expressions
 
 %start input
 
@@ -38,7 +36,6 @@
   #include <ruby.h>
 
   #include "expression.h"
-  #include "expressions.h"
 }
 
 %define api.pure full
@@ -85,12 +82,6 @@ expression
   | expression '/' expression                                   { $$ = create_division_expression($1, $3); }
   | expression '%' expression                                   { $$ = create_modulo_expression($1, $3); }
   | '(' expression ')'                                          { $$ = create_expression_expression($2); }
-  | '{' expressions '}'                                         { $$ = create_expressions_expression($2); }
-  ;
-
-expressions
-  : expression                                                  { $$ = create_expression_expressions($1); }
-  | expressions expression                                      { $$ = create_expressions($1, $2); }
   ;
 
 %%
