@@ -2,7 +2,7 @@
   long integer;
   double floating_point;
   char *identifier;
-  Expression *expression;
+  VALUE expression;
 }
 
 %token                  FALSE_TOKEN
@@ -29,13 +29,11 @@
   #include "lexical_analyzer.h"
 
   void yyset_column(const int column, const yyscan_t scanner);
-  void yyerror(const YYLTYPE *yylloc, const yyscan_t scanner, Expression **expression, const char *message);
+  void yyerror(const YYLTYPE *yylloc, const yyscan_t scanner, VALUE *expression, const char *message);
 }
 
 %code requires {
   #include <ruby.h>
-
-  #include "expression.h"
 }
 
 %define api.pure full
@@ -45,7 +43,7 @@
 %locations
 
 %param       { void *scanner }
-%parse-param { Expression **expression }
+%parse-param { VALUE *expression }
 
 %%
 
@@ -54,39 +52,39 @@ input
   ;
 
 expression
-  : FALSE_TOKEN                                                 { $$ = create_false_expression(); }
-  | TRUE_TOKEN                                                  { $$ = create_true_expression(); }
-  | INTEGER_TOKEN                                               { $$ = create_integer_expression($1); }
-  | FLOATING_POINT_TOKEN                                        { $$ = create_floating_point_expression($1); }
-  | IDENTIFIER_TOKEN                                            { $$ = create_identifier_expression($1); }
-  | IDENTIFIER_TOKEN '=' expression                             { $$ = create_assignment_expression($1, $3); }
-  | IDENTIFIER_TOKEN ADDITION_ASSIGNMENT_TOKEN expression       { $$ = create_addition_assignment_expression($1, $3); }
-  | IDENTIFIER_TOKEN SUBTRACTION_ASSIGNMENT_TOKEN expression    { $$ = create_subtraction_assignment_expression($1, $3); }
-  | IDENTIFIER_TOKEN MULTIPLICATION_ASSIGNMENT_TOKEN expression { $$ = create_multiplication_assignment_expression($1, $3); }
-  | IDENTIFIER_TOKEN DIVISION_ASSIGNMENT_TOKEN expression       { $$ = create_division_assignment_expression($1, $3); }
-  | IDENTIFIER_TOKEN MODULO_ASSIGNMENT_TOKEN expression         { $$ = create_modulo_assignment_expression($1, $3); }
-  | IDENTIFIER_TOKEN MAPPED_TO_TOKEN expression                 { $$ = create_mapped_to_expression($1, $3); }
-  | expression LOGICAL_OR_TOKEN expression                      { $$ = create_logical_or_expression($1, $3); }
-  | expression LOGICAL_AND_TOKEN expression                     { $$ = create_logical_and_expression($1, $3); }
-  | expression EQUAL_TO_TOKEN expression                        { $$ = create_equal_to_expression($1, $3); }
-  | expression NOT_EQUAL_TO_TOKEN expression                    { $$ = create_not_equal_to_expression($1, $3); }
-  | expression '<' expression                                   { $$ = create_less_than_expression($1, $3); }
-  | expression LESS_THAN_OR_EQUAL_TO_TOKEN expression           { $$ = create_less_than_or_equal_to_expression($1, $3); }
-  | expression '>' expression                                   { $$ = create_greater_than_expression($1, $3); }
-  | expression GREATER_THAN_OR_EQUAL_TO_TOKEN expression        { $$ = create_greater_than_or_equal_to_expression($1, $3); }
-  | expression '|' expression                                   { $$ = create_pipe_expression($1, $3); }
-  | expression '$' expression                                   { $$ = create_application_expression($1, $3); }
-  | expression '+' expression                                   { $$ = create_addition_expression($1, $3); }
-  | expression '-' expression                                   { $$ = create_subtraction_expression($1, $3); }
-  | expression '*' expression                                   { $$ = create_multiplication_expression($1, $3); }
-  | expression '/' expression                                   { $$ = create_division_expression($1, $3); }
-  | expression '%' expression                                   { $$ = create_modulo_expression($1, $3); }
-  | '(' expression ')'                                          { $$ = create_expression_expression($2); }
+  : FALSE_TOKEN                                                 { $$ = rb_funcall(rb_path2class("Oxide::Expressions::False"), rb_intern("new"), 0); }
+  | TRUE_TOKEN                                                  { $$ = rb_funcall(rb_path2class("Oxide::Expressions::True"), rb_intern("new"), 0); }
+  | INTEGER_TOKEN                                               { $$ = rb_funcall(rb_path2class("Oxide::Expressions::Integer"), rb_intern("new"), 1, INT2NUM($1)); }
+  | FLOATING_POINT_TOKEN                                        { $$ = rb_funcall(rb_path2class("Oxide::Expressions::FloatingPoint"),rb_intern("new"), 1, rb_float_new($1)); }
+  | IDENTIFIER_TOKEN                                            { $$ = rb_funcall(rb_path2class("Oxide::Expressions::Identifier"), rb_intern("new"), 1, rb_str_new2($1)); }
+  | IDENTIFIER_TOKEN '=' expression                             { $$ = rb_funcall(rb_path2class("Oxide::Expressions::Assignment"), rb_intern("new"), 2, rb_str_new2($1), $3); }
+  | IDENTIFIER_TOKEN ADDITION_ASSIGNMENT_TOKEN expression       { $$ = rb_funcall(rb_path2class("Oxide::Expressions::AdditionAssignment"), rb_intern("new"), 2, rb_str_new2($1), $3); }
+  | IDENTIFIER_TOKEN SUBTRACTION_ASSIGNMENT_TOKEN expression    { $$ = rb_funcall(rb_path2class("Oxide::Expressions::SubtractionAssignment"), rb_intern("new"), 2, rb_str_new2($1), $3); }
+  | IDENTIFIER_TOKEN MULTIPLICATION_ASSIGNMENT_TOKEN expression { $$ = rb_funcall(rb_path2class("Oxide::Expressions::MultiplicationAssignment"), rb_intern("new"), 2, rb_str_new2($1), $3); }
+  | IDENTIFIER_TOKEN DIVISION_ASSIGNMENT_TOKEN expression       { $$ = rb_funcall(rb_path2class("Oxide::Expressions::DivisionAssignment"), rb_intern("new"), 2, rb_str_new2($1), $3); }
+  | IDENTIFIER_TOKEN MODULO_ASSIGNMENT_TOKEN expression         { $$ = rb_funcall(rb_path2class("Oxide::Expressions::ModuloAssignment"), rb_intern("new"), 2, rb_str_new2($1), $3); }
+  | IDENTIFIER_TOKEN MAPPED_TO_TOKEN expression                 { $$ = rb_funcall(rb_path2class("Oxide::Expressions::MappedTo"), rb_intern("new"), 2, rb_str_new2($1), $3); }
+  | expression LOGICAL_OR_TOKEN expression                      { $$ = rb_funcall(rb_path2class("Oxide::Expressions::LogicalOr"), rb_intern("new"), 2, $1, $3); }
+  | expression LOGICAL_AND_TOKEN expression                     { $$ = rb_funcall(rb_path2class("Oxide::Expressions::LogicalAnd"), rb_intern("new"), 2, $1, $3); }
+  | expression EQUAL_TO_TOKEN expression                        { $$ = rb_funcall(rb_path2class("Oxide::Expressions::EqualTo"), rb_intern("new"), 2, $1, $3); }
+  | expression NOT_EQUAL_TO_TOKEN expression                    { $$ = rb_funcall(rb_path2class("Oxide::Expressions::NotEqualTo"), rb_intern("new"), 2, $1, $3); }
+  | expression '<' expression                                   { $$ = rb_funcall(rb_path2class("Oxide::Expressions::LessThan"), rb_intern("new"), 2, $1, $3); }
+  | expression LESS_THAN_OR_EQUAL_TO_TOKEN expression           { $$ = rb_funcall(rb_path2class("Oxide::Expressions::LessThanOrEqualTo"), rb_intern("new"), 2, $1, $3); }
+  | expression '>' expression                                   { $$ = rb_funcall(rb_path2class("Oxide::Expressions::GreaterThan"), rb_intern("new"), 2, $1, $3); }
+  | expression GREATER_THAN_OR_EQUAL_TO_TOKEN expression        { $$ = rb_funcall(rb_path2class("Oxide::Expressions::GreaterThanOrEqualTo"), rb_intern("new"), 2, $1, $3); }
+  | expression '|' expression                                   { $$ = rb_funcall(rb_path2class("Oxide::Expressions::Pipe"), rb_intern("new"), 2, $1, $3); }
+  | expression '$' expression                                   { $$ = rb_funcall(rb_path2class("Oxide::Expressions::Application"), rb_intern("new"), 2, $1, $3); }
+  | expression '+' expression                                   { $$ = rb_funcall(rb_path2class("Oxide::Expressions::Addition"), rb_intern("new"), 2, $1, $3); }
+  | expression '-' expression                                   { $$ = rb_funcall(rb_path2class("Oxide::Expressions::Subtraction"), rb_intern("new"), 2, $1, $3); }
+  | expression '*' expression                                   { $$ = rb_funcall(rb_path2class("Oxide::Expressions::Multiplication"), rb_intern("new"), 2, $1, $3); }
+  | expression '/' expression                                   { $$ = rb_funcall(rb_path2class("Oxide::Expressions::Division"), rb_intern("new"), 2, $1, $3); }
+  | expression '%' expression                                   { $$ = rb_funcall(rb_path2class("Oxide::Expressions::Modulo"), rb_intern("new"), 2, $1, $3); }
+  | '(' expression ')'                                          { $$ = $2; }
   ;
 
 %%
 
-void yyerror(const YYLTYPE *yylloc, const yyscan_t scanner, Expression **expression, const char *message) {
+void yyerror(const YYLTYPE *yylloc, const yyscan_t scanner, VALUE *expression, const char *message) {
   fprintf(stderr, "%i:%i: %s\n", yylloc->first_line, yylloc->first_column, message);
 }
 
@@ -108,16 +106,12 @@ static VALUE call_parser(const VALUE parser) {
 
   Data_Get_Struct(parser, yyscan_t, scanner);
 
-  Expression *expression;
+  VALUE expression;
 
   if(yyparse(scanner, &expression) != 0)
     rb_raise(rb_eRuntimeError, "Could not parse input");
 
-  const VALUE syntax_tree = expression_to_hash(expression);
-
-  delete_expression(expression);
-
-  return syntax_tree;
+  return expression;
 }
 
 static VALUE initialize_string_parser(const VALUE string_parser, VALUE input) {
