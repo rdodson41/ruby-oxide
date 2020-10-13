@@ -20,7 +20,7 @@ create_makefile('parser') do |config|
       $(YACC) $(YFLAGS) --defines=$(@) --output-file=/dev/null $(<)
 
     %.c: %.y
-      $(YACC) $(YFLAGS) --output-file=$(@) $(<)
+      $(YACC) $(YFLAGS) --output-file=$(@) --verbose $(<)
 
     .INTERMEDIATE: $(srcdir)/parser.h
     lexical_analyzer.o: $(srcdir)/parser.h
