@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require('oxide/expressions.rb')
+require('oxide/expressions')
 require('oxide/parser')
 require('oxide/version')
 
