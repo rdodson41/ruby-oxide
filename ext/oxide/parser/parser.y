@@ -20,6 +20,7 @@
 %left '$'
 %left '+' '-'
 %left '*' '/' '%'
+%right '!'
 %left INCREMENT_TOKEN DECREMENT_TOKEN
 
 %nterm <expression> expression
@@ -80,6 +81,9 @@ expression
   | expression '*' expression                                   { $$ = rb_funcall(rb_path2class("Oxide::Expressions::Multiplication"), rb_intern("new"), 2, $1, $3); }
   | expression '/' expression                                   { $$ = rb_funcall(rb_path2class("Oxide::Expressions::Division"), rb_intern("new"), 2, $1, $3); }
   | expression '%' expression                                   { $$ = rb_funcall(rb_path2class("Oxide::Expressions::Modulo"), rb_intern("new"), 2, $1, $3); }
+  | '+' expression                                              { $$ = rb_funcall(rb_path2class("Oxide::Expressions::UnaryAddition"), rb_intern("new"), 1, $2); }
+  | '-' expression                                              { $$ = rb_funcall(rb_path2class("Oxide::Expressions::UnarySubtraction"), rb_intern("new"), 1, $2); }
+  | '!' expression                                              { $$ = rb_funcall(rb_path2class("Oxide::Expressions::LogicalNot"), rb_intern("new"), 1, $2); }
   | expression INCREMENT_TOKEN                                  { $$ = rb_funcall(rb_path2class("Oxide::Expressions::PostfixIncrement"), rb_intern("new"), 1, $1); }
   | expression DECREMENT_TOKEN                                  { $$ = rb_funcall(rb_path2class("Oxide::Expressions::PostfixDecrement"), rb_intern("new"), 1, $1); }
   | INCREMENT_TOKEN expression                                  { $$ = rb_funcall(rb_path2class("Oxide::Expressions::PrefixIncrement"), rb_intern("new"), 1, $2); }
