@@ -57,7 +57,7 @@ expression
   | INTEGER_TOKEN                                               { $$ = rb_funcall(rb_path2class("Oxide::Expressions::Integer"), rb_intern("new"), 1, INT2NUM($1)); }
   | FLOATING_POINT_TOKEN                                        { $$ = rb_funcall(rb_path2class("Oxide::Expressions::FloatingPoint"),rb_intern("new"), 1, rb_float_new($1)); }
   | IDENTIFIER_TOKEN                                            { $$ = rb_funcall(rb_path2class("Oxide::Expressions::Identifier"), rb_intern("new"), 1, rb_str_new2($1)); }
-  | IDENTIFIER_TOKEN '=' expression                             { $$ = rb_funcall(rb_path2class("Oxide::Expressions::Assignment"), rb_intern("new"), 2, rb_str_new2($1), $3); }
+  | IDENTIFIER_TOKEN '=' expression                             { $$ = rb_funcall(rb_path2class("Oxide::Expressions::BasicAssignment"), rb_intern("new"), 2, rb_str_new2($1), $3); }
   | IDENTIFIER_TOKEN ADDITION_ASSIGNMENT_TOKEN expression       { $$ = rb_funcall(rb_path2class("Oxide::Expressions::AdditionAssignment"), rb_intern("new"), 2, rb_str_new2($1), $3); }
   | IDENTIFIER_TOKEN SUBTRACTION_ASSIGNMENT_TOKEN expression    { $$ = rb_funcall(rb_path2class("Oxide::Expressions::SubtractionAssignment"), rb_intern("new"), 2, rb_str_new2($1), $3); }
   | IDENTIFIER_TOKEN MULTIPLICATION_ASSIGNMENT_TOKEN expression { $$ = rb_funcall(rb_path2class("Oxide::Expressions::MultiplicationAssignment"), rb_intern("new"), 2, rb_str_new2($1), $3); }

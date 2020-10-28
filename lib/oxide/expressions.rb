@@ -8,7 +8,7 @@ module Oxide
     Integer = Struct.new(:integer)
     FloatingPoint = Struct.new(:floating_point)
     Identifier = Struct.new(:identifier)
-    Assignment = Struct.new(:identifier, :right)
+    BasicAssignment = Struct.new(:identifier, :right)
     AdditionAssignment = Struct.new(:identifier, :right)
     SubtractionAssignment = Struct.new(:identifier, :right)
     MultiplicationAssignment = Struct.new(:identifier, :right)
