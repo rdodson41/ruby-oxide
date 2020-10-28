@@ -5,9 +5,6 @@ module Oxide
     class False; end
     class True; end
 
-    Integer = Struct.new(:integer)
-    FloatingPoint = Struct.new(:floating_point)
-    Identifier = Struct.new(:identifier)
     BasicAssignment = Struct.new(:left, :right)
     AdditionAssignment = Struct.new(:left, :right)
     SubtractionAssignment = Struct.new(:left, :right)
@@ -36,5 +33,8 @@ module Oxide
     PostfixDecrement = Struct.new(:left)
     PrefixIncrement = Struct.new(:right)
     PrefixDecrement = Struct.new(:right)
+    Integer = Struct.new(:integer)
+    FloatingPoint = Struct.new(:floating_point)
+    Identifier = Struct.new(:identifier)
   end
 end

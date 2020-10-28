@@ -7,10 +7,21 @@
 
 %token                  FALSE_TOKEN
 %token                  TRUE_TOKEN
+%token                  IF_TOKEN
+%token                  UNLESS_TOKEN
+%token                  ELSE_TOKEN
+%token                  SWITCH_TOKEN
+%token                  CASE_TOKEN
+%token                  DEFAULT_TOKEN
+%token                  WHILE_TOKEN
+%token                  UNTIL_TOKEN
+%token                  FOR_TOKEN
+%token                  END_TOKEN
 %token <integer>        INTEGER_TOKEN
 %token <floating_point> FLOATING_POINT_TOKEN
 %token <identifier>     IDENTIFIER_TOKEN
 
+%right BREAK_TOKEN CONTINUE_TOKEN RETURN_TOKEN
 %right '=' ADDITION_ASSIGNMENT_TOKEN SUBTRACTION_ASSIGNMENT_TOKEN MULTIPLICATION_ASSIGNMENT_TOKEN DIVISION_ASSIGNMENT_TOKEN MODULO_ASSIGNMENT_TOKEN
 %left LOGICAL_OR_TOKEN
 %left LOGICAL_AND_TOKEN
@@ -54,12 +65,18 @@ input
   : expression                                                  { *expression = $1; }
   ;
 
+expressions
+  : expression
+  | expressions expression
+  ;
+
 expression
   : FALSE_TOKEN                                                 { $$ = rb_funcall(rb_path2class("Oxide::Expressions::False"), rb_intern("new"), 0); }
   | TRUE_TOKEN                                                  { $$ = rb_funcall(rb_path2class("Oxide::Expressions::True"), rb_intern("new"), 0); }
-  | INTEGER_TOKEN                                               { $$ = rb_funcall(rb_path2class("Oxide::Expressions::Integer"), rb_intern("new"), 1, INT2NUM($1)); }
-  | FLOATING_POINT_TOKEN                                        { $$ = rb_funcall(rb_path2class("Oxide::Expressions::FloatingPoint"),rb_intern("new"), 1, rb_float_new($1)); }
-  | IDENTIFIER_TOKEN                                            { $$ = rb_funcall(rb_path2class("Oxide::Expressions::Identifier"), rb_intern("new"), 1, rb_str_new2($1)); }
+  | if_expression                                               { $$ = Qnil; }
+  | selection_expression                                        { $$ = Qnil; }
+  | iteration_expression                                        { $$ = Qnil; }
+  | jump_expression                                             { $$ = Qnil; }
   | expression '=' expression                                   { $$ = rb_funcall(rb_path2class("Oxide::Expressions::BasicAssignment"), rb_intern("new"), 2, $1, $3); }
   | expression ADDITION_ASSIGNMENT_TOKEN expression             { $$ = rb_funcall(rb_path2class("Oxide::Expressions::AdditionAssignment"), rb_intern("new"), 2, $1, $3); }
   | expression SUBTRACTION_ASSIGNMENT_TOKEN expression          { $$ = rb_funcall(rb_path2class("Oxide::Expressions::SubtractionAssignment"), rb_intern("new"), 2, $1, $3); }
@@ -81,14 +98,50 @@ expression
   | expression '*' expression                                   { $$ = rb_funcall(rb_path2class("Oxide::Expressions::Multiplication"), rb_intern("new"), 2, $1, $3); }
   | expression '/' expression                                   { $$ = rb_funcall(rb_path2class("Oxide::Expressions::Division"), rb_intern("new"), 2, $1, $3); }
   | expression '%' expression                                   { $$ = rb_funcall(rb_path2class("Oxide::Expressions::Modulo"), rb_intern("new"), 2, $1, $3); }
-  | '+' expression                                              { $$ = rb_funcall(rb_path2class("Oxide::Expressions::UnaryAddition"), rb_intern("new"), 1, $2); }
-  | '-' expression                                              { $$ = rb_funcall(rb_path2class("Oxide::Expressions::UnarySubtraction"), rb_intern("new"), 1, $2); }
+  /* | '+' expression                                              { $$ = rb_funcall(rb_path2class("Oxide::Expressions::UnaryAddition"), rb_intern("new"), 1, $2); }
+  | '-' expression                                              { $$ = rb_funcall(rb_path2class("Oxide::Expressions::UnarySubtraction"), rb_intern("new"), 1, $2); } */
   | '!' expression                                              { $$ = rb_funcall(rb_path2class("Oxide::Expressions::LogicalNot"), rb_intern("new"), 1, $2); }
   | expression INCREMENT_TOKEN                                  { $$ = rb_funcall(rb_path2class("Oxide::Expressions::PostfixIncrement"), rb_intern("new"), 1, $1); }
   | expression DECREMENT_TOKEN                                  { $$ = rb_funcall(rb_path2class("Oxide::Expressions::PostfixDecrement"), rb_intern("new"), 1, $1); }
-  | INCREMENT_TOKEN expression                                  { $$ = rb_funcall(rb_path2class("Oxide::Expressions::PrefixIncrement"), rb_intern("new"), 1, $2); }
-  | DECREMENT_TOKEN expression                                  { $$ = rb_funcall(rb_path2class("Oxide::Expressions::PrefixDecrement"), rb_intern("new"), 1, $2); }
+  /* | INCREMENT_TOKEN expression                                  { $$ = rb_funcall(rb_path2class("Oxide::Expressions::PrefixIncrement"), rb_intern("new"), 1, $2); }
+  | DECREMENT_TOKEN expression                                  { $$ = rb_funcall(rb_path2class("Oxide::Expressions::PrefixDecrement"), rb_intern("new"), 1, $2); } */
+  | INTEGER_TOKEN                                               { $$ = rb_funcall(rb_path2class("Oxide::Expressions::Integer"), rb_intern("new"), 1, INT2NUM($1)); }
+  | FLOATING_POINT_TOKEN                                        { $$ = rb_funcall(rb_path2class("Oxide::Expressions::FloatingPoint"),rb_intern("new"), 1, rb_float_new($1)); }
+  | IDENTIFIER_TOKEN                                            { $$ = rb_funcall(rb_path2class("Oxide::Expressions::Identifier"), rb_intern("new"), 1, rb_str_new2($1)); }
   | '(' expression ')'                                          { $$ = $2; }
+  ;
+
+if_expression
+  : IF_TOKEN expression expressions END_TOKEN
+  | IF_TOKEN expression expressions ELSE_TOKEN if_expression
+  | UNLESS_TOKEN expression expressions END_TOKEN
+  | UNLESS_TOKEN expression expressions ELSE_TOKEN if_expression
+  ;
+
+selection_expression
+  : SWITCH_TOKEN expression case_expressions END_TOKEN
+  | SWITCH_TOKEN expression case_expressions DEFAULT_TOKEN expressions END_TOKEN
+  ;
+
+case_expressions
+  : case_expression
+  | case_expressions case_expression
+  ;
+
+case_expression
+  : CASE_TOKEN expression expressions
+  ;
+
+iteration_expression
+  : WHILE_TOKEN expression expressions END_TOKEN
+  | UNTIL_TOKEN expression expressions END_TOKEN
+  | FOR_TOKEN expression ';' expression ';' expression expressions END_TOKEN
+  ;
+
+jump_expression
+  : BREAK_TOKEN expression
+  | CONTINUE_TOKEN expression
+  | RETURN_TOKEN expression
   ;
 
 %%

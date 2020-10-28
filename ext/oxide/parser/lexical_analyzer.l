@@ -29,11 +29,19 @@ noreturn static void yy_fatal_error(yyconst char message[], yyscan_t scanner);
 [#].*
 "false"                                                   { return FALSE_TOKEN; }
 "true"                                                    { return TRUE_TOKEN; }
-[+-]?[0-9]+                                               { sscanf(yytext, "%li", &yylval->integer); return INTEGER_TOKEN; }
-[+-]?0[Xx][0-9A-Fa-f]+                                    { sscanf(yytext, "%li", &yylval->integer); return INTEGER_TOKEN; }
-[+-]?[0-9]+([.][0-9]+)?([Ee][+-]?[0-9]+)?                 { sscanf(yytext, "%lf", &yylval->floating_point); return FLOATING_POINT_TOKEN; }
-[+-]?0[Xx][0-9A-Fa-f]+([.][0-9A-Fa-f]+)([Pp][+-]?[0-9]+)? { sscanf(yytext, "%lf", &yylval->floating_point); return FLOATING_POINT_TOKEN; }
-[A-Za-z_][0-9A-Za-z_]*                                    { yylval->identifier = strndup(yytext, yyleng); return IDENTIFIER_TOKEN; }
+"if"                                                      { return IF_TOKEN; }
+"unless"                                                  { return UNLESS_TOKEN; }
+"else"                                                    { return ELSE_TOKEN; }
+"switch"                                                  { return SWITCH_TOKEN; }
+"case"                                                    { return CASE_TOKEN; }
+"default"                                                 { return DEFAULT_TOKEN; }
+"while"                                                   { return WHILE_TOKEN; }
+"until"                                                   { return UNTIL_TOKEN; }
+"for"                                                     { return FOR_TOKEN; }
+"end"                                                     { return END_TOKEN; }
+"break"                                                   { return BREAK_TOKEN; }
+"continue"                                                { return CONTINUE_TOKEN; }
+"return"                                                  { return RETURN_TOKEN; }
 "+="                                                      { return ADDITION_ASSIGNMENT_TOKEN; }
 "-="                                                      { return SUBTRACTION_ASSIGNMENT_TOKEN; }
 "*="                                                      { return MULTIPLICATION_ASSIGNMENT_TOKEN; }
@@ -47,4 +55,9 @@ noreturn static void yy_fatal_error(yyconst char message[], yyscan_t scanner);
 ">="                                                      { return GREATER_THAN_OR_EQUAL_TO_TOKEN; }
 "++"                                                      { return INCREMENT_TOKEN; }
 "--"                                                      { return DECREMENT_TOKEN; }
+[+-]?[0-9]+                                               { sscanf(yytext, "%li", &yylval->integer); return INTEGER_TOKEN; }
+[+-]?0[Xx][0-9A-Fa-f]+                                    { sscanf(yytext, "%li", &yylval->integer); return INTEGER_TOKEN; }
+[+-]?[0-9]+([.][0-9]+)?([Ee][+-]?[0-9]+)?                 { sscanf(yytext, "%lf", &yylval->floating_point); return FLOATING_POINT_TOKEN; }
+[+-]?0[Xx][0-9A-Fa-f]+([.][0-9A-Fa-f]+)([Pp][+-]?[0-9]+)? { sscanf(yytext, "%lf", &yylval->floating_point); return FLOATING_POINT_TOKEN; }
+[A-Za-z_][0-9A-Za-z_]*                                    { yylval->identifier = strndup(yytext, yyleng); return IDENTIFIER_TOKEN; }
 .                                                         { return *yytext; }
