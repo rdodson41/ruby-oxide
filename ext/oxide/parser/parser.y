@@ -29,7 +29,8 @@
   #include "lexical_analyzer.h"
 
   void yyset_column(const int column, const yyscan_t scanner);
-  void yyerror(const YYLTYPE *yylloc, const yyscan_t scanner, VALUE *expression, const char *message);
+
+  static void yyerror(const YYLTYPE *yylloc, const yyscan_t scanner, VALUE *expression, const char *message);
 }
 
 %code requires {
@@ -83,10 +84,6 @@ expression
 
 %%
 
-void yyerror(const YYLTYPE *yylloc, const yyscan_t scanner, VALUE *expression, const char *message) {
-  fprintf(stderr, "%i:%i: %s\n", yylloc->first_line, yylloc->first_column, message);
-}
-
 static void deallocate_parser(yyscan_t scanner) {
   yylex_destroy(scanner);
 }
@@ -134,4 +131,8 @@ void Init_parser() {
   rb_define_alloc_func(cParser, allocate_parser);
   rb_define_method(cParser, "call", call_parser, 0);
   rb_define_method(cStringParser, "initialize", initialize_string_parser, 1);
+}
+
+static void yyerror(const YYLTYPE *yylloc, const yyscan_t scanner, VALUE *expression, const char *message) {
+  fprintf(stderr, "%i:%i: %s\n", yylloc->first_line, yylloc->first_column, message);
 }
