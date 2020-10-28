@@ -1,5 +1,7 @@
 %{
 
+#include <stdnoreturn.h>
+
 #include "parser.h"
 
 #define YY_USER_ACTION \
@@ -9,7 +11,7 @@
   yylloc->last_column = yycolumn + (int)yyleng; \
   yycolumn += yyleng;
 
-_Noreturn static void yy_fatal_error(yyconst char message[], yyscan_t scanner);
+noreturn static void yy_fatal_error(yyconst char message[], yyscan_t scanner);
 
 %}
 
