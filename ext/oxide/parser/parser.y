@@ -11,7 +11,7 @@
 %token <floating_point> FLOATING_POINT_TOKEN
 %token <identifier>     IDENTIFIER_TOKEN
 
-%right '=' ADDITION_ASSIGNMENT_TOKEN SUBTRACTION_ASSIGNMENT_TOKEN MULTIPLICATION_ASSIGNMENT_TOKEN DIVISION_ASSIGNMENT_TOKEN MODULO_ASSIGNMENT_TOKEN MAPPED_TO_TOKEN
+%right '=' ADDITION_ASSIGNMENT_TOKEN SUBTRACTION_ASSIGNMENT_TOKEN MULTIPLICATION_ASSIGNMENT_TOKEN DIVISION_ASSIGNMENT_TOKEN MODULO_ASSIGNMENT_TOKEN
 %left LOGICAL_OR_TOKEN
 %left LOGICAL_AND_TOKEN
 %left EQUAL_TO_TOKEN NOT_EQUAL_TO_TOKEN
@@ -63,7 +63,6 @@ expression
   | IDENTIFIER_TOKEN MULTIPLICATION_ASSIGNMENT_TOKEN expression { $$ = rb_funcall(rb_path2class("Oxide::Expressions::MultiplicationAssignment"), rb_intern("new"), 2, rb_str_new2($1), $3); }
   | IDENTIFIER_TOKEN DIVISION_ASSIGNMENT_TOKEN expression       { $$ = rb_funcall(rb_path2class("Oxide::Expressions::DivisionAssignment"), rb_intern("new"), 2, rb_str_new2($1), $3); }
   | IDENTIFIER_TOKEN MODULO_ASSIGNMENT_TOKEN expression         { $$ = rb_funcall(rb_path2class("Oxide::Expressions::ModuloAssignment"), rb_intern("new"), 2, rb_str_new2($1), $3); }
-  | IDENTIFIER_TOKEN MAPPED_TO_TOKEN expression                 { $$ = rb_funcall(rb_path2class("Oxide::Expressions::MappedTo"), rb_intern("new"), 2, rb_str_new2($1), $3); }
   | expression LOGICAL_OR_TOKEN expression                      { $$ = rb_funcall(rb_path2class("Oxide::Expressions::LogicalOr"), rb_intern("new"), 2, $1, $3); }
   | expression LOGICAL_AND_TOKEN expression                     { $$ = rb_funcall(rb_path2class("Oxide::Expressions::LogicalAnd"), rb_intern("new"), 2, $1, $3); }
   | expression EQUAL_TO_TOKEN expression                        { $$ = rb_funcall(rb_path2class("Oxide::Expressions::EqualTo"), rb_intern("new"), 2, $1, $3); }

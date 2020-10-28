@@ -39,7 +39,6 @@ noreturn static void yy_fatal_error(yyconst char message[], yyscan_t scanner);
 "*="                                                      { return MULTIPLICATION_ASSIGNMENT_TOKEN; }
 "/="                                                      { return DIVISION_ASSIGNMENT_TOKEN; }
 "%="                                                      { return MODULO_ASSIGNMENT_TOKEN; }
-"->"                                                      { return MAPPED_TO_TOKEN; }
 "||"                                                      { return LOGICAL_OR_TOKEN; }
 "&&"                                                      { return LOGICAL_AND_TOKEN; }
 "=="                                                      { return EQUAL_TO_TOKEN; }

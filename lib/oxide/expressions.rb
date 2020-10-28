@@ -14,7 +14,6 @@ module Oxide
     MultiplicationAssignment = Struct.new(:identifier, :right)
     DivisionAssignment = Struct.new(:identifier, :right)
     ModuloAssignment = Struct.new(:identifier, :right)
-    MappedTo = Struct.new(:identifier, :right)
     LogicalOr = Struct.new(:left, :right)
     LogicalAnd = Struct.new(:left, :right)
     EqualTo = Struct.new(:left, :right)
