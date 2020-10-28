@@ -45,4 +45,6 @@ noreturn static void yy_fatal_error(yyconst char message[], yyscan_t scanner);
 "!="                                                      { return NOT_EQUAL_TO_TOKEN; }
 "<="                                                      { return LESS_THAN_OR_EQUAL_TO_TOKEN; }
 ">="                                                      { return GREATER_THAN_OR_EQUAL_TO_TOKEN; }
+"++"                                                      { return INCREMENT_TOKEN; }
+"--"                                                      { return DECREMENT_TOKEN; }
 .                                                         { return *yytext; }

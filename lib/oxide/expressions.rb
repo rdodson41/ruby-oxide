@@ -29,5 +29,9 @@ module Oxide
     Multiplication = Struct.new(:left, :right)
     Division = Struct.new(:left, :right)
     Modulo = Struct.new(:left, :right)
+    PostfixIncrement = Struct.new(:left)
+    PostfixDecrement = Struct.new(:left)
+    PrefixIncrement = Struct.new(:right)
+    PrefixDecrement = Struct.new(:right)
   end
 end
