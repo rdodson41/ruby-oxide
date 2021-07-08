@@ -5,8 +5,11 @@
   VALUE expression;
 }
 
-%token                  FALSE_TOKEN
-%token                  TRUE_TOKEN
+%token                  LET_TOKEN
+%token                  VAR_TOKEN
+%token                  FUNC_TOKEN
+%token                  STRUCT_TOKEN
+%token                  CLASS_TOKEN
 %token                  IF_TOKEN
 %token                  UNLESS_TOKEN
 %token                  ELSE_TOKEN
@@ -17,6 +20,8 @@
 %token                  UNTIL_TOKEN
 %token                  FOR_TOKEN
 %token                  END_TOKEN
+%token                  FALSE_TOKEN
+%token                  TRUE_TOKEN
 %token <integer>        INTEGER_TOKEN
 %token <floating_point> FLOATING_POINT_TOKEN
 %token <identifier>     IDENTIFIER_TOKEN
@@ -62,17 +67,63 @@
 %%
 
 input
-  : expression                                                  { *expression = $1; }
+  : definitions                                                 { *expression = Qnil; }
+  ;
+
+definitions
+  : definition
+  | definitions definition
+  ;
+
+definition
+  : LET_TOKEN IDENTIFIER_TOKEN '=' expression
+  | VAR_TOKEN IDENTIFIER_TOKEN '=' expression
+  | FUNC_TOKEN IDENTIFIER_TOKEN '(' ')' statements END_TOKEN
+  | FUNC_TOKEN IDENTIFIER_TOKEN '(' named_types ')' statements END_TOKEN
+  | STRUCT_TOKEN IDENTIFIER_TOKEN definitions END_TOKEN
+  | CLASS_TOKEN IDENTIFIER_TOKEN definitions END_TOKEN
+  ;
+
+named_types
+  : named_type
+  | named_types ',' named_type
+  ;
+
+named_type
+  : IDENTIFIER_TOKEN ':' type
+  ;
+
+types
+  : type
+  | types ',' type
+  ;
+
+type
+  : IDENTIFIER_TOKEN
+  | '(' types ')'
+  | '(' named_types ')'
+  | '{' types '}'
+  | '{' named_types '}'
+  | type '[' ']'
+  | type '[' types ']'
+  ;
+
+statements
+  : statement
+  | statements statement
+  ;
+
+statement
+  : expression
   ;
 
 expressions
   : expression
-  | expressions expression
+  | expressions ',' expression
   ;
 
 expression
-  : FALSE_TOKEN                                                 { $$ = rb_funcall(rb_path2class("Oxide::Expressions::False"), rb_intern("new"), 0); }
-  | TRUE_TOKEN                                                  { $$ = rb_funcall(rb_path2class("Oxide::Expressions::True"), rb_intern("new"), 0); }
+  : definition                                                  { $$ = Qnil; }
   | if_expression                                               { $$ = Qnil; }
   | selection_expression                                        { $$ = Qnil; }
   | iteration_expression                                        { $$ = Qnil; }
@@ -105,22 +156,24 @@ expression
   | expression DECREMENT_TOKEN                                  { $$ = rb_funcall(rb_path2class("Oxide::Expressions::PostfixDecrement"), rb_intern("new"), 1, $1); }
   /* | INCREMENT_TOKEN expression                                  { $$ = rb_funcall(rb_path2class("Oxide::Expressions::PrefixIncrement"), rb_intern("new"), 1, $2); }
   | DECREMENT_TOKEN expression                                  { $$ = rb_funcall(rb_path2class("Oxide::Expressions::PrefixDecrement"), rb_intern("new"), 1, $2); } */
+  | FALSE_TOKEN                                                 { $$ = rb_funcall(rb_path2class("Oxide::Expressions::False"), rb_intern("new"), 0); }
+  | TRUE_TOKEN                                                  { $$ = rb_funcall(rb_path2class("Oxide::Expressions::True"), rb_intern("new"), 0); }
   | INTEGER_TOKEN                                               { $$ = rb_funcall(rb_path2class("Oxide::Expressions::Integer"), rb_intern("new"), 1, INT2NUM($1)); }
   | FLOATING_POINT_TOKEN                                        { $$ = rb_funcall(rb_path2class("Oxide::Expressions::FloatingPoint"),rb_intern("new"), 1, rb_float_new($1)); }
   | IDENTIFIER_TOKEN                                            { $$ = rb_funcall(rb_path2class("Oxide::Expressions::Identifier"), rb_intern("new"), 1, rb_str_new2($1)); }
-  | '(' expression ')'                                          { $$ = $2; }
+  | compound_expression                                         { $$ = Qnil; }
   ;
 
 if_expression
-  : IF_TOKEN expression expressions END_TOKEN
-  | IF_TOKEN expression expressions ELSE_TOKEN if_expression
-  | UNLESS_TOKEN expression expressions END_TOKEN
-  | UNLESS_TOKEN expression expressions ELSE_TOKEN if_expression
+  : IF_TOKEN expression statements END_TOKEN
+  | IF_TOKEN expression statements ELSE_TOKEN if_expression
+  | UNLESS_TOKEN expression statements END_TOKEN
+  | UNLESS_TOKEN expression statements ELSE_TOKEN if_expression
   ;
 
 selection_expression
   : SWITCH_TOKEN expression case_expressions END_TOKEN
-  | SWITCH_TOKEN expression case_expressions DEFAULT_TOKEN expressions END_TOKEN
+  | SWITCH_TOKEN expression case_expressions DEFAULT_TOKEN statements END_TOKEN
   ;
 
 case_expressions
@@ -129,19 +182,46 @@ case_expressions
   ;
 
 case_expression
-  : CASE_TOKEN expression expressions
+  : CASE_TOKEN expression statements
   ;
 
 iteration_expression
-  : WHILE_TOKEN expression expressions END_TOKEN
-  | UNTIL_TOKEN expression expressions END_TOKEN
-  | FOR_TOKEN expression ';' expression ';' expression expressions END_TOKEN
+  : WHILE_TOKEN expression statements END_TOKEN
+  | UNTIL_TOKEN expression statements END_TOKEN
+  | FOR_TOKEN expression ';' expression ';' expression statements END_TOKEN
   ;
 
 jump_expression
   : BREAK_TOKEN expression
   | CONTINUE_TOKEN expression
   | RETURN_TOKEN expression
+  ;
+
+compound_expression
+  : '(' expressions ')'
+  | '(' named_expressions ')'
+  | '{' expressions '}'
+  | '{' named_expressions '}'
+  | '[' expressions ']'
+  | '[' mapped_expressions ']'
+  ;
+
+named_expressions
+  : named_expression
+  | named_expressions ',' named_expression
+  ;
+
+named_expression
+  : IDENTIFIER_TOKEN ':' expression
+  ;
+
+mapped_expressions
+  : mapped_expression
+  | mapped_expressions ',' mapped_expression
+  ;
+
+mapped_expression
+  : expressions ':' expression
   ;
 
 %%

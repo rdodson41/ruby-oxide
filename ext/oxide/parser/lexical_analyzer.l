@@ -27,8 +27,11 @@ noreturn static void yy_fatal_error(yyconst char message[], yyscan_t scanner);
 
 [\t\n\r ]
 [#].*
-"false"                                                   { return FALSE_TOKEN; }
-"true"                                                    { return TRUE_TOKEN; }
+"let"                                                     { return LET_TOKEN; }
+"var"                                                     { return VAR_TOKEN; }
+"func"                                                    { return FUNC_TOKEN; }
+"struct"                                                  { return STRUCT_TOKEN; }
+"class"                                                   { return CLASS_TOKEN; }
 "if"                                                      { return IF_TOKEN; }
 "unless"                                                  { return UNLESS_TOKEN; }
 "else"                                                    { return ELSE_TOKEN; }
@@ -42,6 +45,8 @@ noreturn static void yy_fatal_error(yyconst char message[], yyscan_t scanner);
 "break"                                                   { return BREAK_TOKEN; }
 "continue"                                                { return CONTINUE_TOKEN; }
 "return"                                                  { return RETURN_TOKEN; }
+"false"                                                   { return FALSE_TOKEN; }
+"true"                                                    { return TRUE_TOKEN; }
 "+="                                                      { return ADDITION_ASSIGNMENT_TOKEN; }
 "-="                                                      { return SUBTRACTION_ASSIGNMENT_TOKEN; }
 "*="                                                      { return MULTIPLICATION_ASSIGNMENT_TOKEN; }
