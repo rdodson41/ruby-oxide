@@ -38,6 +38,7 @@
 %left '*' '/' '%'
 %right '!'
 %left INCREMENT_TOKEN DECREMENT_TOKEN
+%left  '.'
 
 %nterm <expression> expression
 
@@ -79,6 +80,7 @@ definition
   : LET_TOKEN IDENTIFIER_TOKEN '=' expression
   | VAR_TOKEN IDENTIFIER_TOKEN '=' expression
   | FUNC_TOKEN IDENTIFIER_TOKEN '(' ')' statements END_TOKEN
+  | FUNC_TOKEN IDENTIFIER_TOKEN '(' types ')' statements END_TOKEN
   | FUNC_TOKEN IDENTIFIER_TOKEN '(' named_types ')' statements END_TOKEN
   | STRUCT_TOKEN IDENTIFIER_TOKEN definitions END_TOKEN
   | CLASS_TOKEN IDENTIFIER_TOKEN definitions END_TOKEN
@@ -204,6 +206,7 @@ compound_expression
   | '{' named_expressions '}'
   | '[' expressions ']'
   | '[' mapped_expressions ']'
+  | expression '.' IDENTIFIER_TOKEN
   ;
 
 named_expressions
