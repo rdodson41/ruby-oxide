@@ -130,12 +130,7 @@ expression
   | selection_expression                                        { $$ = Qnil; }
   | iteration_expression                                        { $$ = Qnil; }
   | jump_expression                                             { $$ = Qnil; }
-  | expression '=' expression                                   { $$ = rb_funcall(rb_path2class("Oxide::Expressions::BasicAssignment"), rb_intern("new"), 2, $1, $3); }
-  | expression ADDITION_ASSIGNMENT_TOKEN expression             { $$ = rb_funcall(rb_path2class("Oxide::Expressions::AdditionAssignment"), rb_intern("new"), 2, $1, $3); }
-  | expression SUBTRACTION_ASSIGNMENT_TOKEN expression          { $$ = rb_funcall(rb_path2class("Oxide::Expressions::SubtractionAssignment"), rb_intern("new"), 2, $1, $3); }
-  | expression MULTIPLICATION_ASSIGNMENT_TOKEN expression       { $$ = rb_funcall(rb_path2class("Oxide::Expressions::MultiplicationAssignment"), rb_intern("new"), 2, $1, $3); }
-  | expression DIVISION_ASSIGNMENT_TOKEN expression             { $$ = rb_funcall(rb_path2class("Oxide::Expressions::DivisionAssignment"), rb_intern("new"), 2, $1, $3); }
-  | expression MODULO_ASSIGNMENT_TOKEN expression               { $$ = rb_funcall(rb_path2class("Oxide::Expressions::ModuloAssignment"), rb_intern("new"), 2, $1, $3); }
+  | assignment_expression                                       { $$ = Qnil; }
   | expression LOGICAL_OR_TOKEN expression                      { $$ = rb_funcall(rb_path2class("Oxide::Expressions::LogicalOr"), rb_intern("new"), 2, $1, $3); }
   | expression LOGICAL_AND_TOKEN expression                     { $$ = rb_funcall(rb_path2class("Oxide::Expressions::LogicalAnd"), rb_intern("new"), 2, $1, $3); }
   | expression EQUAL_TO_TOKEN expression                        { $$ = rb_funcall(rb_path2class("Oxide::Expressions::EqualTo"), rb_intern("new"), 2, $1, $3); }
@@ -197,6 +192,15 @@ jump_expression
   : BREAK_TOKEN expression
   | CONTINUE_TOKEN expression
   | RETURN_TOKEN expression
+  ;
+
+assignment_expression
+  : expression '=' expression
+  | expression ADDITION_ASSIGNMENT_TOKEN expression
+  | expression SUBTRACTION_ASSIGNMENT_TOKEN expression
+  | expression MULTIPLICATION_ASSIGNMENT_TOKEN expression
+  | expression DIVISION_ASSIGNMENT_TOKEN expression
+  | expression MODULO_ASSIGNMENT_TOKEN expression
   ;
 
 compound_expression
