@@ -67,12 +67,18 @@
 %%
 
 input
-  : definitions
+  : declarations
   ;
 
-definitions
-  : definition
-  | definitions definition
+declarations
+  : declaration
+  | declarations declaration
+  ;
+
+declaration
+  : LET_TOKEN IDENTIFIER_TOKEN ':' type
+  | VAR_TOKEN IDENTIFIER_TOKEN ':' type
+  | definition
   ;
 
 definition
@@ -81,8 +87,8 @@ definition
   | FUNC_TOKEN IDENTIFIER_TOKEN '(' ')' statements END_TOKEN
   | FUNC_TOKEN IDENTIFIER_TOKEN '(' types ')' statements END_TOKEN
   | FUNC_TOKEN IDENTIFIER_TOKEN '(' named_types ')' statements END_TOKEN
-  | STRUCT_TOKEN IDENTIFIER_TOKEN definitions END_TOKEN
-  | CLASS_TOKEN IDENTIFIER_TOKEN definitions END_TOKEN
+  | STRUCT_TOKEN IDENTIFIER_TOKEN declarations END_TOKEN
+  | CLASS_TOKEN IDENTIFIER_TOKEN declarations END_TOKEN
   ;
 
 types
@@ -151,13 +157,9 @@ expression
   | expression '*' expression
   | expression '/' expression
   | expression '%' expression
-  /* | '+' expression
-  | '-' expression */
   | '!' expression
   | expression INCREMENT_TOKEN
   | expression DECREMENT_TOKEN
-  /* | INCREMENT_TOKEN expression
-  | DECREMENT_TOKEN expression */
   | FALSE_TOKEN
   | TRUE_TOKEN
   | INTEGER_TOKEN
