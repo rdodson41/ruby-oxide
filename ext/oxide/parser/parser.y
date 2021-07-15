@@ -78,6 +78,8 @@ declarations
 declaration
   : LET_TOKEN IDENTIFIER_TOKEN ':' type
   | VAR_TOKEN IDENTIFIER_TOKEN ':' type
+  | STRUCT_TOKEN IDENTIFIER_TOKEN declarations END_TOKEN
+  | CLASS_TOKEN IDENTIFIER_TOKEN declarations END_TOKEN
   | definition
   ;
 
@@ -87,8 +89,6 @@ definition
   | FUNC_TOKEN IDENTIFIER_TOKEN '(' ')' statements END_TOKEN
   | FUNC_TOKEN IDENTIFIER_TOKEN '(' types ')' statements END_TOKEN
   | FUNC_TOKEN IDENTIFIER_TOKEN '(' named_types ')' statements END_TOKEN
-  | STRUCT_TOKEN IDENTIFIER_TOKEN declarations END_TOKEN
-  | CLASS_TOKEN IDENTIFIER_TOKEN declarations END_TOKEN
   ;
 
 types
@@ -121,7 +121,7 @@ statements
   ;
 
 statement
-  : expression ';'
+  : expression
   ;
 
 expressions
