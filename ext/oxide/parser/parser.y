@@ -116,8 +116,12 @@ named_type
   ;
 
 statements
-  : expression
-  | statements expression
+  : statement
+  | statements statement
+  ;
+
+statement
+  : expression ';'
   ;
 
 expressions
