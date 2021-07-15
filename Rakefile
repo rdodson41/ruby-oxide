@@ -5,4 +5,10 @@ require('rspec/core/rake_task')
 
 RSpec::Core::RakeTask.new(:spec)
 
-task(default: %i[clobber spec])
+require('rake/extensiontask')
+
+task(build: :compile)
+
+Rake::ExtensionTask.new('oxide/parser')
+
+task(default: %i[clobber compile spec])

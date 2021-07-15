@@ -2,4 +2,7 @@
 # frozen_string_literal: true
 
 require('bundler/setup')
-require('oxide')
+require('oxide/expressions')
+require('oxide/parser')
+
+Oxide::Parser.new.call

@@ -11,5 +11,11 @@ Metrics/BlockLength:
 Style/Copyright:
   Enabled: false
 
+Style/Documentation:
+  Enabled: false
+
+Style/DocumentationMethod:
+  Enabled: false
+
 Style/MissingElse:
   Enabled: false
