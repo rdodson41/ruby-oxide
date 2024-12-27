@@ -1,21 +1,8 @@
-require: rubocop-rspec
+require:
+  - rubocop-performance
+  - rubocop-rspec
+  - rubocop-rake
+  - rubocop-thread_safety
 
 AllCops:
   EnabledByDefault: true
-  TargetRubyVersion: 2.3
-
-Metrics/BlockLength:
-  Exclude:
-    - oxide.gemspec
-
-Style/Copyright:
-  Enabled: false
-
-Style/Documentation:
-  Enabled: false
-
-Style/DocumentationMethod:
-  Enabled: false
-
-Style/MissingElse:
-  Enabled: false

@@ -23,8 +23,17 @@ gem('rspec', '~> 3.0')
 # guide.
 gem('rubocop', require: false)
 
+#  An extension of RuboCop focused on code performance checks.
+gem('rubocop-performance', require: false)
+
 # Code style checking for RSpec files
 gem('rubocop-rspec', require: false)
+
+#  A RuboCop plugin for Rake
+gem('rubocop-rake', require: false)
+
+# An extension of RuboCop focused on thread-safety checks.
+gem('rubocop-thread_safety', require: false)
 
 # Code coverage for Ruby 1.9+ with a powerful configuration library and
 # automatic merging of coverage across test suites

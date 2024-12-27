@@ -5,7 +5,7 @@ require('mkmf')
 SRC_EXT << %w[l y]
 
 create_makefile('parser') do |config|
-  config << <<~MAKEFILE.gsub(/  /, "\t")
+  config << <<~MAKEFILE.gsub('  ', "\t")
     YACC := PATH="$${HOMEBREW_PREFIX}/opt/bison/bin:$${PATH}" bison
 
     .DEFAULT_GOAL := all

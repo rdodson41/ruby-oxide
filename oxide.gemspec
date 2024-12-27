@@ -8,8 +8,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Richard E. Dodson']
   spec.email         = ['richard.elias.dodson@gmail.com']
 
-  spec.summary       = 'An implementation of the Oxide Programming Language ' \
-                       'that is written in Ruby.'
+  spec.summary       = 'An implementation of the Oxide Programming Language that is written in Ruby.'
   spec.homepage      = 'https://github.com/rdodson41/ruby-oxide'
   spec.license       = 'MIT'
   spec.required_ruby_version = Gem::Requirement.new('>= 2.3.0')
@@ -17,6 +16,7 @@ Gem::Specification.new do |spec|
   spec.metadata['homepage_uri'] = spec.homepage
   spec.metadata['source_code_uri'] = 'https://github.com/rdodson41/ruby-oxide'
   spec.metadata['changelog_uri'] = 'https://github.com/rdodson41/ruby-oxide/issues'
+  spec.metadata['rubygems_mfa_required'] = 'true'
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added

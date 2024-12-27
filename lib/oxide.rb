@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require('oxide/expressions')
 require('oxide/parser')
 require('oxide/version')
 
