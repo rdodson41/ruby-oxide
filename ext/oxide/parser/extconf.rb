@@ -9,6 +9,8 @@ create_makefile('parser') do |config|
     LEX  := PATH="$${HOMEBREW_PREFIX}/opt/flex/bin:$${PATH}"  flex
     YACC := PATH="$${HOMEBREW_PREFIX}/opt/bison/bin:$${PATH}" bison
 
+    CFLAGS := -Wno-deprecated-declarations -Wno-attribute-warning
+
     .DEFAULT_GOAL := all
 
     %.h: %.l

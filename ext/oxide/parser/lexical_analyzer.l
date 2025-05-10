@@ -47,6 +47,8 @@ noreturn static void yy_fatal_error(yyconst char message[], yyscan_t scanner);
 "return"                                                   { return RETURN_TOKEN; }
 "false"                                                    { return FALSE_TOKEN; }
 "true"                                                     { return TRUE_TOKEN; }
+"->"                                                       { return DASH_ROCKET_TOKEN; }
+"=>"                                                       { return HASH_ROCKET_TOKEN; }
 "+="                                                       { return ADDITION_ASSIGNMENT_TOKEN; }
 "-="                                                       { return SUBTRACTION_ASSIGNMENT_TOKEN; }
 "*="                                                       { return MULTIPLICATION_ASSIGNMENT_TOKEN; }

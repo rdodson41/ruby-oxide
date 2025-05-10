@@ -28,7 +28,9 @@
 %token <integer>        INTEGER_TOKEN
 %token <floating_point> FLOATING_POINT_TOKEN
 %token <identifier>     IDENTIFIER_TOKEN
+%token                  DASH_ROCKET_TOKEN
 
+%right HASH_ROCKET_TOKEN
 %right '=' ADDITION_ASSIGNMENT_TOKEN SUBTRACTION_ASSIGNMENT_TOKEN MULTIPLICATION_ASSIGNMENT_TOKEN DIVISION_ASSIGNMENT_TOKEN MODULO_ASSIGNMENT_TOKEN
 %left LOGICAL_OR_TOKEN
 %left LOGICAL_AND_TOKEN
@@ -38,10 +40,8 @@
 %left '$'
 %left '+' '-'
 %left '*' '/' '%'
-%right '!'
+%right PREFIX_INCREMENT_TOKEN PREFIX_DECREMENT_TOKEN UNARY_ADDITION_TOKEN UNARY_SUBTRACTION_TOKEN '!'
 %left INCREMENT_TOKEN DECREMENT_TOKEN '(' ')' '{' '}' '[' ']' '.'
-
-%start input
 
 %code {
   #include "lexical_analyzer.h"
@@ -66,8 +66,40 @@
 
 %%
 
-input
-  :
+expression
+  : expression '=' expression
+  | expression ADDITION_ASSIGNMENT_TOKEN expression
+  | expression SUBTRACTION_ASSIGNMENT_TOKEN expression
+  | expression MULTIPLICATION_ASSIGNMENT_TOKEN expression
+  | expression DIVISION_ASSIGNMENT_TOKEN expression
+  | expression MODULO_ASSIGNMENT_TOKEN expression
+  | expression LOGICAL_OR_TOKEN expression
+  | expression LOGICAL_AND_TOKEN expression
+  | expression EQUAL_TO_TOKEN expression
+  | expression NOT_EQUAL_TO_TOKEN expression
+  | expression '<' expression
+  | expression LESS_THAN_OR_EQUAL_TO_TOKEN expression
+  | expression '>' expression
+  | expression GREATER_THAN_OR_EQUAL_TO_TOKEN expression
+  | expression '|' expression
+  | expression '$' expression
+  | expression '+' expression
+  | expression '-' expression
+  | expression '*' expression
+  | expression '/' expression
+  | expression '%' expression
+  | INCREMENT_TOKEN expression %prec PREFIX_INCREMENT_TOKEN
+  | DECREMENT_TOKEN expression %prec PREFIX_DECREMENT_TOKEN
+  | '+' expression %prec UNARY_ADDITION_TOKEN
+  | '-' expression %prec UNARY_SUBTRACTION_TOKEN
+  | '!' expression
+  | expression INCREMENT_TOKEN
+  | expression DECREMENT_TOKEN
+  | FALSE_TOKEN
+  | TRUE_TOKEN
+  | INTEGER_TOKEN
+  | FLOATING_POINT_TOKEN
+  | IDENTIFIER_TOKEN
   ;
 
 %%
